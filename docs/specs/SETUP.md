@@ -104,7 +104,7 @@ rails db:seed  # Datos iniciales (opcional)
 rails server -p 3000
 ```
 
-### Frontend (React + TypeScript)
+### Frontend (React + TypeScript + Vite)
 
 ```bash
 # 1. Navegar al directorio frontend
@@ -229,7 +229,7 @@ sscatfacts/
 │   ├── db/
 │   └── spec/                   # Tests RSpec
 │
-├── frontend/                   # React + TypeScript
+├── frontend/                   # React + TypeScript + Vite
 │   ├── src/
 │   │   ├── atoms/              # Componentes básicos
 │   │   ├── molecules/          # Componentes compuestos

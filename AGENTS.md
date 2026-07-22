@@ -9,6 +9,7 @@ Este archivo proporciona contexto a los AI assistants sobre cómo trabajar con e
 | Capa | Tecnología | Versión |
 |------|------------|---------|
 | **Frontend** | React + TypeScript | React 18+ |
+| **Bundler** | Vite | 5+ |
 | **Backend** | Ruby on Rails (API mode) | Rails 7+ |
 | **Base de Datos** | PostgreSQL | 15+ |
 | **Caché/Colas** | Redis | 7+ |

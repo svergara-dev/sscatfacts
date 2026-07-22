@@ -205,7 +205,7 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 | **Popular** | Un fact con más likes de la comunidad | 05-FACTS-POPULARES |
 | **API Externa** | catfact.ninja (fuente de facts) | 03-CONSULTAR-MARCAR-FACTS |
 | **Backend** | Servidor API (Ruby on Rails) | 06-ARQUITECTURA |
-| **Frontend** | Aplicación de usuario (React + TypeScript) | 06-ARQUITECTURA |
+| **Frontend** | Aplicación de usuario (React + TypeScript + Vite) | 06-ARQUITECTURA |
 | **Token** | JWT generado en login para autenticación | 02-INICIO-SESION |
 
 ### Técnicos
@@ -390,7 +390,7 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 - **External API**: Consumir con `faraday` o `httparty`
 - **Testing**: RSpec con FactoryBot
 
-### Frontend - React + TypeScript
+### Frontend - React + TypeScript + Vite
 
 - **State Management**: Redux Toolkit o Zustand
 - **HTTP Client**: Axios con interceptores para JWT
@@ -540,7 +540,7 @@ jobs:
 | `simplecov` | Code coverage | 07-CALIDAD |
 | `kaminari` | Paginación | 04-LISTA-FACTS-GUSTADOS, 05-FACTS-POPULARES |
 
-### Frontend (React + TypeScript)
+### Frontend (React + TypeScript + Vite)
 
 | Paquete | Propósito | Spec Referencia |
 |---------|-----------|-----------------|

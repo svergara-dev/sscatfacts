@@ -102,7 +102,7 @@ end
 
 ## 2. Patrones de Diseño Implementados
 
-### 2.1 Frontend (React + TypeScript)
+### 2.1 Frontend (React + TypeScript + Vite)
 
 | Patrón | Uso en el Proyecto | Beneficio |
 |--------|-------------------|-----------|
@@ -271,7 +271,7 @@ RSpec.describe 'Auth API', type: :request do
 end
 ```
 
-### 4.3 Frontend - React + TypeScript (Jest)
+### 4.3 Frontend - React + TypeScript + Vite (Jest)
 
 **Estructura de Tests**:
 ```

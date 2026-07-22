@@ -89,7 +89,7 @@ Esta especificación define la arquitectura del sistema SSCatFacts, estableciend
                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                     FRONTEND                                     │
-│                  React + TypeScript                              │
+│              React + TypeScript + Vite                            │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
 │  │   Pages     │  │ Components  │  │   Services  │             │
 │  │             │  │             │  │  (Axios)    │             │
@@ -144,7 +144,7 @@ sscatfacts/
 │       ├── 09-UML.md
 │       └── SETUP.md            ← Guía de inicio rápido
 │
-├── frontend/                   ← React + TypeScript
+├── frontend/                   ← React + TypeScript + Vite
 │   ├── src/
 │   │   ├── atoms/              ← Componentes básicos (Button, Input, Card)
 │   │   ├── molecules/          ← Combinaciones (LoginForm, FactCard)
@@ -220,7 +220,7 @@ sscatfacts/
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         FRONTEND (React + TypeScript)                       │
+│                   FRONTEND (React + TypeScript + Vite)                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  PATRÓN PRINCIPAL: ATOMIC DESIGN                                            │
@@ -461,7 +461,7 @@ sscatfacts/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    FRONTEND (React)                          │
+│                 FRONTEND (React + Vite)                      │
 │                                                             │
 │  Build: npm run build                                       │
 │  Output: /dist (archivos estáticos)                         │
@@ -506,11 +506,11 @@ FRONTEND_URL=http://localhost:8080
 RAILS_ENV=production
 ```
 
-### Frontend (React)
+### Frontend (React + Vite)
 
 ```bash
 # API Backend
-REACT_APP_API_URL=https://api.sscatfacts.com/api/v1
+VITE_API_URL=https://api.sscatfacts.com/api/v1
 
 # Environment
 NODE_ENV=production

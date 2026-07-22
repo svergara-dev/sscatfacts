@@ -69,6 +69,20 @@ Cada entrada debe seguir este formato:
 
 ---
 
+### 2026-07-22 — Decisión: Vite como bundler del frontend
+
+**Contexto**: Elegir herramienta de build para React + TypeScript.
+**Decisión**: Usar Vite en lugar de Create React App (CRA).
+**Razón**:
+- Vite es significativamente más rápido (HMR instantáneo)
+- CRA está oficialmente deprecated (2023)
+- Vite tiene mejor soporte para TypeScript y ESM
+- Configuración mínima out-of-the-box
+- Mejor experiencia de desarrollo
+**Archivos**: `AGENTS.md` (stack tecnológico)
+
+---
+
 ## Aprendizajes
 
 ### 2026-07-22 — API catfact.ninja limitada
