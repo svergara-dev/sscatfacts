@@ -126,6 +126,94 @@ Esta especificación define la arquitectura del sistema SSCatFacts, estableciend
 
 ---
 
+## Estructura del Repositorio
+
+```
+sscatfacts/
+├── docs/
+│   └── specs/                  ← Documentación del proyecto
+│       ├── README.md           ← Índice y resumen general
+│       ├── 01-REGISTRO-USUARIOS.md
+│       ├── 02-INICIO-SESION.md
+│       ├── 03-CONSULTAR-MARCAR-FACTS.md
+│       ├── 04-LISTA-FACTS-GUSTADOS.md
+│       ├── 05-FACTS-POPULARES.md
+│       ├── 06-ARQUITECTURA.md  ← Este archivo
+│       ├── 07-CALIDAD-DESARROLLO.md
+│       ├── 08-BONUS.md
+│       ├── 09-UML.md
+│       └── SETUP.md            ← Guía de inicio rápido
+│
+├── frontend/                   ← React + TypeScript
+│   ├── src/
+│   │   ├── atoms/              ← Componentes básicos (Button, Input, Card)
+│   │   ├── molecules/          ← Combinaciones (LoginForm, FactCard)
+│   │   ├── organisms/          ← Componentes complejos (Header, FactsList)
+│   │   ├── templates/          ← Layouts (AuthTemplate, DashboardTemplate)
+│   │   ├── pages/              ← Páginas (LoginPage, FactsPage)
+│   │   ├── hooks/              ← Custom hooks (useAuth, useFacts, useLike)
+│   │   ├── services/           ← Capa API (apiClient, authService)
+│   │   ├── store/              ← Estado global (Redux/Zustand)
+│   │   ├── types/              ← TypeScript interfaces
+│   │   └── utils/              ← Helpers puros
+│   ├── public/
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   └── Dockerfile
+│
+├── backend/                    ← Ruby on Rails API
+│   ├── app/
+│   │   ├── controllers/        ← API endpoints
+│   │   │   └── api/v1/
+│   │   ├── models/             ← Entidades (User, CatFact, UserLike)
+│   │   ├── services/           ← Lógica de negocio
+│   │   │   ├── auth/
+│   │   │   ├── external/
+│   │   │   └── cache/
+│   │   ├── use_cases/          ← Casos de uso
+│   │   │   ├── auth/
+│   │   │   ├── facts/
+│   │   │   └── likes/
+│   │   └── serializers/        ← Formato de respuesta
+│   ├── config/
+│   ├── db/
+│   │   ├── migrate/
+│   │   └── seeds.rb
+│   ├── spec/                   ← Tests
+│   │   ├── models/
+│   │   ├── requests/
+│   │   ├── services/
+│   │   └── factories/
+│   ├── Gemfile
+│   ├── .rubocop.yml
+│   └── Dockerfile
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yml              ← Tests y linters
+│       └── deploy.yml          ← Deploy automático
+│
+├── docker-compose.yml          ← Orquestación de servicios
+├── .gitignore
+├── .editorconfig
+└── README.md                   ← Documentación principal
+```
+
+### Principios de Organización
+
+| Capa | Carpeta | Responsabilidad |
+|------|---------|-----------------|
+| **Presentación** | `atoms/`, `molecules/`, `organisms/` | UI Components |
+| **Contenedores** | `pages/`, `templates/` | Lógica de página |
+| **Lógica** | `hooks/`, `services/` | Reutilización de lógica |
+| **Estado** | `store/` | Estado global |
+| **Dominio** | `models/`, `use_cases/` | Reglas de negocio |
+| **Persistencia** | `db/`, `migrate/` | Datos |
+| **API** | `controllers/`, `serializers/` | Comunicación HTTP |
+
+---
+
 ## Arquitectura por Capas y Patrones de Diseño
 
 ### Frontend: Atomic Design + Patrones Adicionales
@@ -516,6 +604,569 @@ NODE_ENV=production
 - **Backend**: Ruby on Rails, devise-jwt, rack-cors
 - **Infraestructura**: AWS (S3, CloudFront, EC2, RDS)
 - **API Externa**: catfact.ninja
+
+---
+
+## Estrategia de Manejo de Errores
+
+### Formato de Respuesta de Error
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "El nombre de usuario ya está en uso",
+    "details": [
+      {
+        "field": "username",
+        "message": "Ya existe un usuario con este nombre"
+      }
+    ]
+  }
+}
+```
+
+### Códigos de Error Estándar
+
+| Código HTTP | Código de Error | Descripción |
+|-------------|-----------------|-------------|
+| 400 | `VALIDATION_ERROR` | Error de validación |
+| 401 | `UNAUTHORIZED` | No autenticado |
+| 403 | `FORBIDDEN` | Sin permisos |
+| 404 | `NOT_FOUND` | Recurso no encontrado |
+| 409 | `CONFLICT` | Conflicto (duplicado) |
+| 422 | `UNPROCESSABLE_ENTITY` | Error de negocio |
+| 429 | `RATE_LIMIT_EXCEEDED` | Límite de peticiones |
+| 500 | `INTERNAL_ERROR` | Error del servidor |
+| 503 | `EXTERNAL_API_ERROR` | Error de API externa |
+
+### Manejo por Capa
+
+**Backend (Rails):**
+
+```ruby
+# app/controllers/concerns/error_handler.rb
+module ErrorHandler
+  extend ActiveSupport::Concern
+
+  included do
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      render json: {
+        success: false,
+        error: {
+          code: 'NOT_FOUND',
+          message: e.message
+        }
+      }, status: :not_found
+    end
+
+    rescue_from ActiveRecord::RecordInvalid do |e|
+      render json: {
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: e.message,
+          details: e.record.errors.full_messages
+        }
+      }, status: :unprocessable_entity
+    end
+  end
+end
+```
+
+**Frontend (React):**
+
+```typescript
+// components/ErrorBoundary.tsx
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback error={this.state.error} />;
+    }
+    return this.props.children;
+  }
+}
+
+// hooks/useErrorHandler.ts
+const useErrorHandler = () => {
+  const handleError = (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      window.location.href = '/login';
+    } else if (error.response?.status === 429) {
+      toast.error('Demasiadas peticiones. Intenta más tarde.');
+    } else {
+      toast.error('Ocurrió un error. Intenta nuevamente.');
+    }
+  };
+
+  return { handleError };
+};
+```
+
+### Toast Notifications (Frontend)
+
+```typescript
+// services/notificationService.ts
+import { toast } from 'react-toastify';
+
+export const notify = {
+  success: (message: string) => toast.success(message),
+  error: (message: string) => toast.error(message),
+  warning: (message: string) => toast.warning(message),
+  info: (message: string) => toast.info(message),
+};
+
+// Uso en componentes
+import { notify } from '@/services/notificationService';
+
+const handleLike = async (factId: number) => {
+  try {
+    await factsService.like(factId);
+    notify.success('Fact marcado como favorito');
+  } catch (error) {
+    notify.error('No se pudo marcar el fact');
+  }
+};
+```
+
+---
+
+## Estrategia de Logging
+
+### Niveles de Log
+
+| Nivel | Uso | Ejemplo |
+|-------|-----|---------|
+| `DEBUG` | Información detallada para debugging | Request/Response completo |
+| `INFO` | Eventos normales del sistema | Login exitoso, fact consultado |
+| `WARN` | Advertencias que no rompen el sistema | Rate limit casi alcanzado |
+| `ERROR` | Errores que requieren atención | API externa falló |
+
+### Backend (Rails)
+
+**Configuración:**
+```ruby
+# config/environments/production.rb
+config.logger = Logger.new(STDOUT)
+config.log_level = :info
+
+config.log_formatter = proc do |severity, datetime, progname, msg|
+  "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')}] #{severity}: #{msg}\n"
+end
+```
+
+**Uso:**
+```ruby
+# app/services/fact_service.rb
+class FactService
+  def fetch_random_fact
+    Rails.logger.info("Fetching random fact from external API")
+    
+    response = HTTP.get("https://catfact.ninja/fact")
+    
+    if response.status.success?
+      Rails.logger.info("Fact fetched successfully")
+      response.parse
+    else
+      Rails.logger.error("Failed to fetch fact: #{response.status}")
+      nil
+    end
+  rescue => e
+    Rails.logger.error("Error fetching fact: #{e.message}")
+    nil
+  end
+end
+```
+
+### Frontend (React)
+
+**Configuración:**
+```typescript
+// utils/logger.ts
+enum LogLevel {
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR'
+}
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+export const logger = {
+  debug: (message: string, data?: any) => {
+    if (!isProduction) {
+      console.debug(`[DEBUG] ${message}`, data);
+    }
+  },
+  info: (message: string, data?: any) => {
+    console.info(`[INFO] ${message}`, data);
+  },
+  warn: (message: string, data?: any) => {
+    console.warn(`[WARN] ${message}`, data);
+  },
+  error: (message: string, error?: any) => {
+    console.error(`[ERROR] ${message}`, error);
+  }
+};
+```
+
+**Uso:**
+```typescript
+// hooks/useFacts.ts
+import { logger } from '@/utils/logger';
+
+const useFacts = () => {
+  const fetchRandomFact = async () => {
+    logger.info('Fetching random fact');
+    
+    try {
+      const fact = await factsService.getRandom();
+      logger.debug('Fact fetched', fact);
+      return fact;
+    } catch (error) {
+      logger.error('Failed to fetch fact', error);
+      throw error;
+    }
+  };
+
+  return { fetchRandomFact };
+};
+```
+
+### Logs Esperados
+
+**Backend:**
+```
+[2026-07-22 10:30:00] INFO: User registered successfully (username: catlover123)
+[2026-07-22 10:30:05] INFO: User logged in (username: catlover123)
+[2026-07-22 10:30:10] INFO: Fetching random fact from external API
+[2026-07-22 10:30:11] INFO: Fact fetched successfully
+[2026-07-22 10:30:15] INFO: Like added (user_id: 1, fact_id: 42)
+[2026-07-22 10:31:00] WARN: Rate limit approaching for IP 192.168.1.1
+[2026-07-22 10:31:30] ERROR: External API unavailable (catfact.ninja)
+```
+
+---
+
+## Documentación de Seguridad
+
+### Headers de Seguridad
+
+**Backend (Rails):**
+```ruby
+# config/initializers/cors.rb
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins 'https://sscatfacts.com'
+    
+    resource '*',
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      credentials: true,
+      max_age: 86400
+  end
+end
+```
+
+**Nginx/Apache (Producción):**
+```
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+add_header Content-Security-Policy "default-src 'self';" always;
+```
+
+### OWASP Top 10 - Medidas Implementadas
+
+| Vulnerabilidad | Medida | Implementación |
+|----------------|--------|----------------|
+| **A01: Broken Access Control** | JWT + Authorization headers | `devise-jwt` |
+| **A02: Cryptographic Failures** | Bcrypt para contraseñas | `devise` |
+| **A03: Injection** | Parámetros preparados | ActiveRecord |
+| **A04: Insecure Design** | Validación de entrada | `rack-attack` + modelos |
+| **A05: Security Misconfiguration** | Variables de entorno | `.env` files |
+| **A06: Vulnerable Components** | Dependencias actualizadas | `bundle audit` |
+| **A07: Auth Failures** | Rate limiting | `rack-attack` |
+| **A08: Data Integrity** | Migraciones verificadas | ActiveRecord |
+| **A09: Logging** | Auditoría de acciones | Rails logger |
+| **A10: SSRF** | URLs whitelist | Faraday configuration |
+
+### Autenticación y Autorización
+
+```ruby
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::API
+  before_action :authenticate_request
+
+  private
+
+  def authenticate_request
+    token = request.headers['Authorization']&.split(' ')&.last
+    
+    begin
+      decoded = JWT.decode(token, Rails.application.secrets.jwt_secret_key, true, algorithm: 'HS256')
+      @current_user = User.find(decoded[0]['user_id'])
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+      render json: { 
+        success: false, 
+        error: { code: 'UNAUTHORIZED', message: 'Token inválido' } 
+      }, status: :unauthorized
+    end
+  end
+end
+```
+
+### Rate Limiting Detallado
+
+```ruby
+# config/initializers/rack_attack.rb
+Rack::Attack.throttle("requests by ip", limit: 100, period: 1.minute) do |req|
+  req.ip unless req.path.start_with?('/assets')
+end
+
+Rack::Attack.throttle("login attempts by ip", limit: 5, period: 1.minute) do |req|
+  req.ip if req.path == '/api/v1/auth/login' && req.post?
+end
+
+Rack::Attack.throttle("registration attempts by ip", limit: 3, period: 1.hour) do |req|
+  req.ip if req.path == '/api/v1/auth/register' && req.post?
+end
+```
+
+### Validación de Inputs
+
+```ruby
+# app/models/user.rb
+class User < ApplicationRecord
+  validates :username, 
+    presence: true, 
+    uniqueness: true, 
+    length: { minimum: 3, maximum: 30 },
+    format: { with: /\A[a-zA-Z0-9_]+\z/, message: "solo puede contener letras, números y guiones bajos" }
+  
+  validates :password, 
+    presence: true, 
+    length: { minimum: 8 },
+    if: :password_required?
+end
+```
+
+```typescript
+// schemas/auth.schema.ts
+import { z } from 'zod';
+
+export const registerSchema = z.object({
+  username: z
+    .string()
+    .min(3, 'Mínimo 3 caracteres')
+    .max(30, 'Máximo 30 caracteres')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Solo letras, números y guiones bajos'),
+  password: z
+    .string()
+    .min(8, 'Mínimo 8 caracteres'),
+  confirmPassword: z
+    .string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Las contraseñas no coinciden',
+  path: ['confirmPassword'],
+});
+```
+
+---
+
+## Estrategia de Performance
+
+### Métricas Objetivo
+
+| Métrica | Objetivo | Herramienta |
+|---------|----------|-------------|
+| Time to First Byte (TTFB) | < 200ms | Lighthouse |
+| First Contentful Paint (FCP) | < 1.5s | Lighthouse |
+| Largest Contentful Paint (LCP) | < 2.5s | Lighthouse |
+| API Response Time (95th) | < 500ms | New Relic/Datadog |
+| Database Query Time | < 100ms | Rails logs |
+
+### Backend - Optimizaciones
+
+**1. N+1 Query Prevention:**
+```ruby
+# MALO - N+1 queries
+facts = CatFact.all
+facts.each { |fact| fact.user_likes.count }
+
+# BUENO - Eager loading
+facts = CatFact.includes(:user_likes).all
+facts.each { |fact| fact.user_likes.count }
+```
+
+**2. Índices de Base de Datos:**
+```ruby
+# db/migrate/xxx_add_indexes.rb
+class AddIndexes < ActiveRecord::Migration[7.0]
+  def change
+    add_index :users, :username, unique: true
+    add_index :user_likes, [:user_id, :fact_id], unique: true
+    add_index :user_likes, :fact_id
+    add_index :cat_facts, :api_fact_id, unique: true
+  end
+end
+```
+
+**3. Caché con Redis:**
+```ruby
+# app/services/fact_service.rb
+class FactService
+  def get_popular_facts(limit: 10)
+    cache_key = "popular_facts_#{limit}"
+    
+    Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      CatFact
+        .left_joins(:user_likes)
+        .group(:id)
+        .order('COUNT(user_likes.id) DESC')
+        .limit(limit)
+    end
+  end
+end
+```
+
+**4. Paginación:**
+```ruby
+# app/controllers/api/v1/facts_controller.rb
+def list
+  page = params[:page] || 1
+  limit = [params[:limit] || 10, 50].min
+  
+  facts = CatFact.page(page).per(limit)
+  
+  render json: {
+    success: true,
+    data: {
+      facts: facts,
+      pagination: {
+        currentPage: facts.current_page,
+        totalPages: facts.total_pages,
+        totalItems: facts.total_count
+      }
+    }
+  }
+end
+```
+
+### Frontend - Optimizaciones
+
+**1. Lazy Loading:**
+```typescript
+// App.tsx
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const FactsPage = React.lazy(() => import('./pages/FactsPage'));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/facts" element={<FactsPage />} />
+      </Routes>
+    </Suspense>
+  );
+}
+```
+
+**2. Memoización:**
+```typescript
+// components/FactCard.tsx
+const FactCard: React.FC<Props> = React.memo(({ fact, onLike }) => {
+  return (
+    <div>
+      <p>{fact.fact}</p>
+      <button onClick={() => onLike(fact.id)}>Like</button>
+    </div>
+  );
+});
+```
+
+**3. Debounce en Búsquedas:**
+```typescript
+// hooks/useDebounce.ts
+import { useState, useEffect } from 'react';
+
+export function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+```
+
+**4. Optimistic Updates:**
+```typescript
+// hooks/useLike.ts
+const useLike = () => {
+  const handleLike = async (factId: number) => {
+    setLiked(true);
+    setLikesCount(prev => prev + 1);
+    
+    try {
+      await factsService.like(factId);
+    } catch (error) {
+      setLiked(false);
+      setLikesCount(prev => prev - 1);
+    }
+  };
+
+  return { handleLike };
+};
+```
+
+### Cache Strategy
+
+| Tipo | TTL | Herramienta | Uso |
+|------|-----|-------------|-----|
+| **API Response** | 5 min | Redis | Facts populares |
+| **Session** | 24 hrs | Redis | JWT validation |
+| **Static Assets** | 1 year | CDN/CloudFront | Imágenes, CSS, JS |
+| **HTML** | No cache | - | SPA index.html |
+
+### Monitoring (Producción)
+
+```ruby
+# Gemfile
+gem 'newrelic_rpm'
+gem 'sentry-ruby'
+```
+
+```typescript
+// Frontend monitoring
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+});
+```
 
 ---
 

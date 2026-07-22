@@ -554,6 +554,119 @@ trim_trailing_whitespace = false
 
 ---
 
+## 7. Convenciones de Código
+
+### 7.1 Nomenclatura
+
+| Tipo | Frontend (TypeScript) | Backend (Ruby) |
+|------|----------------------|----------------|
+| Variables | camelCase | snake_case |
+| Funciones | camelCase | snake_case |
+| Componentes | PascalCase | - |
+| Modelos | - | PascalCase |
+| Archivos | kebab-case | snake_case |
+| CSS Classes | Tailwind utilities | - |
+
+### 7.2 Ejemplos de Nomenclatura
+
+**Frontend:**
+```typescript
+// Variables
+const userName = 'catlover123';
+const factId = 1;
+const isLiked = true;
+
+// Funciones
+const fetchRandomFact = async () => { ... };
+const handleLikeClick = (factId: number) => { ... };
+
+// Componentes
+const FactCard: React.FC<Props> = ({ fact }) => { ... };
+const LoginForm: React.FC = () => { ... };
+
+// Archivos
+// fact-card.tsx
+// use-auth.ts
+// facts-service.ts
+```
+
+**Backend:**
+```ruby
+# Variables y métodos
+user_name = 'catlover123'
+fact_id = 1
+is_liked = true
+
+def fetch_random_fact
+  # ...
+end
+
+def handle_like_click(fact_id)
+  # ...
+end
+
+# Modelos
+class CatFact < ApplicationRecord
+  # ...
+end
+
+# Archivos
+# cat_fact.rb
+# fact_service.rb
+# facts_controller.rb
+```
+
+### 7.3 Estructura de Archivos
+
+**Frontend:**
+```
+src/
+├── atoms/
+│   └── Button/
+│       ├── Button.tsx          # Componente
+│       ├── Button.test.tsx     # Test
+│       ├── Button.stories.tsx  # Storybook (opcional)
+│       └── index.ts           # Export
+├── hooks/
+│   └── useAuth.ts
+├── services/
+│   └── factsService.ts
+└── types/
+    └── fact.types.ts
+```
+
+**Backend:**
+```
+app/
+├── controllers/
+│   └── api/v1/
+│       └── facts_controller.rb
+├── models/
+│   └── cat_fact.rb
+├── services/
+│   └── fact_service.rb
+├── use_cases/
+│   └── fetch_random_fact.rb
+└── serializers/
+    └── fact_serializer.rb
+```
+
+### 7.4 Formato de Código
+
+**TypeScript:**
+- 2 espacios de indentación
+- Punto y coma al final
+- Comillas simples
+- Máximo 100 caracteres por línea
+
+**Ruby:**
+- 2 espacios de indentación
+- Comillas dobles
+- Máximo 120 caracteres por línea
+- `rubocop` para validación
+
+---
+
 ## Criterios de Aceptación
 
 ### SOLID (20 pts)

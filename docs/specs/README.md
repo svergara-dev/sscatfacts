@@ -112,6 +112,146 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 
 ---
 
+## Mapa de Relaciones entre Specs
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         FLUJO DEL SISTEMA                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────┐                                                            │
+│  │  USUARIO    │                                                            │
+│  └──────┬──────┘                                                            │
+│         │                                                                   │
+│         ▼                                                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    ESPEC FUNCIONALES (01-05)                        │   │
+│  │                                                                     │   │
+│  │  01-Registro ──▶ 02-Login ──▶ 03-Facts ──▶ 04-Favoritos           │   │
+│  │                      │              │              │                │   │
+│  │                      │              └──────────────┼──────────────▶ │   │
+│  │                      │                             │  05-Populares │   │
+│  │                      │                             │                │   │
+│  └──────────────────────┼─────────────────────────────┼────────────────┘   │
+│                         │                             │                      │
+│                         ▼                             ▼                      │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    ESPEC NO FUNCIONALES                             │   │
+│  │                                                                     │   │
+│  │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐            │   │
+│  │  │ 06-Arquitectura│  │ 07-Calidad  │    │   09-UML    │            │   │
+│  │  │  (CÓMO se    │   │ (CÓMO se    │    │ (Cómo se    │            │   │
+│  │  │  estructura) │   │  escribe)   │    │  ve)        │            │   │
+│  │  └─────────────┘    └─────────────┘    └─────────────┘            │   │
+│  │                                                                     │   │
+│  │  ┌─────────────┐                                                   │   │
+│  │  │  08-Bonus   │  ◄── Funcionalidades adicionales                 │   │
+│  │  └─────────────┘                                                   │   │
+│  │                                                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### ¿Qué spec consultar según tu necesidad?
+
+| Necesidad | Spec Principal | Specs Relacionadas |
+|-----------|----------------|-------------------|
+| ¿Cómo funciona el registro? | 01-REGISTRO-USUARIOS | 02, 07 |
+| ¿Cómo funciona el login? | 02-INICIO-SESION | 01, 07, 08 (rate limiting) |
+| ¿Cómo se consultan los facts? | 03-CONSULTAR-MARCAR-FACTS | 04, 05, 06 (API externa) |
+| ¿Cómo se guardan favoritos? | 04-LISTA-FACTS-GUSTADOS | 03, 05 |
+| ¿Cómo se ven populares? | 05-FACTS-POPULARES | 03, 04 |
+| ¿Cómo está estructurado el sistema? | 06-ARQUITECTURA | 07, 09 |
+| ¿Qué patrones usar? | 06-ARQUITECTURA + 07-CALIDAD | Todas |
+| ¿Cómo configurar Docker? | 08-BONUS | 06 |
+| ¿Cómo son los diagramas? | 09-UML | 06 |
+
+---
+
+## Glosario de Términos
+
+### Abreviaturas
+
+| Abreviatura | Significado |
+|-------------|-------------|
+| **RF** | Requerimiento Funcional |
+| **NF** | Requerimiento No Funcional |
+| **BD** | Base de Datos |
+| **API** | Application Programming Interface |
+| **JWT** | JSON Web Token |
+| **CORS** | Cross-Origin Resource Sharing |
+| **2FA** | Two-Factor Authentication (Autenticación en Dos Pasos) |
+| **TOTP** | Time-based One-Time Password |
+| **CI/CD** | Continuous Integration / Continuous Deployment |
+| **CDN** | Content Delivery Network |
+| **RDS** | Relational Database Service (AWS) |
+| **ECS** | Elastic Container Service (AWS) |
+| **PK** | Primary Key (Clave Primaria) |
+| **FK** | Foreign Key (Clave Foránea) |
+
+### Términos del Dominio
+
+| Término | Definición | Spec de Referencia |
+|---------|------------|-------------------|
+| **Cat Fact** | Un dato o curiosidad sobre gatos obtenido de la API externa | 03-CONSULTAR-MARCAR-FACTS |
+| **Like** | Acción de marcar un fact como "me gusta" | 03-CONSULTAR-MARCAR-FACTS |
+| **Favorito** | Un fact que el usuario ha marcado con like | 04-LISTA-FACTS-GUSTADOS |
+| **Popular** | Un fact con más likes de la comunidad | 05-FACTS-POPULARES |
+| **API Externa** | catfact.ninja (fuente de facts) | 03-CONSULTAR-MARCAR-FACTS |
+| **Backend** | Servidor API (Ruby on Rails) | 06-ARQUITECTURA |
+| **Frontend** | Aplicación de usuario (React + TypeScript) | 06-ARQUITECTURA |
+| **Token** | JWT generado en login para autenticación | 02-INICIO-SESION |
+
+### Técnicos
+
+| Término | Definición | Spec de Referencia |
+|---------|------------|-------------------|
+| **Atomic Design** | Patrón de organización de componentes por complejidad | 06-ARQUITECTURA, 07-CALIDAD |
+| **Clean Architecture** | Arquitectura por capas con separación de dependencias | 06-ARQUITECTURA, 07-CALIDAD |
+| **Service Object** | Patrón para encapsular lógica de negocio | 07-CALIDAD |
+| **Circuit Breaker** | Patrón para resiliencia con servicios externos | 07-CALIDAD |
+| **Optimistic Update** | Actualización de UI antes de confirmar con backend | 07-CALIDAD |
+| **Rate Limiting** | Limitación de peticiones por tiempo | 02-INICIO-SESION |
+| **Git Flow** | Convención de ramas para desarrollo | 07-CALIDAD |
+| **Conventional Commits** | Convención de mensajes de commit | 07-CALIDAD |
+
+---
+
+## Fuentes de Verdad por Funcionalidad
+
+### ¿Dónde está definido cada concepto?
+
+| Funcionalidad | Definición Principal | Endpoints | Spec Completa |
+|---------------|---------------------|-----------|---------------|
+| **Registro** | `01-REGISTRO-USUARIOS.md` | POST `/api/v1/auth/register` | RF-01-01 a RF-01-05 |
+| **Login** | `02-INICIO-SESION.md` | POST `/api/v1/auth/login` | RF-02-01 a RF-02-05 |
+| **Fact Aleatorio** | `03-CONSULTAR-MARCAR-FACTS.md` | GET `/api/v1/facts/random` | RF-03-01 |
+| **Like/Unlike** | `03-CONSULTAR-MARCAR-FACTS.md` | POST/DELETE `/api/v1/facts/:id/like` | RF-03-02, RF-03-03 |
+| **Lista Facts** | `03-CONSULTAR-MARCAR-FACTS.md` | GET `/api/v1/facts/list` | RF-03-06 |
+| **Favoritos** | `04-LISTA-FACTS-GUSTADOS.md` | GET `/api/v1/users/favorites` | RF-04-01 a RF-04-04 |
+| **Populares** | `05-FACTS-POPULARES.md` | GET `/api/v1/facts/popular` | RF-05-01 a RF-05-05 |
+| **Top N** | `05-FACTS-POPULARES.md` | GET `/api/v1/facts/top/:n` | RF-05-04 |
+
+### ¿Qué spec consultar según el componente?
+
+| Componente | Spec Principal | Contenido |
+|------------|----------------|-----------|
+| **Models** | Specs 01-05 | Tablas, relaciones, índices |
+| **Controllers** | Specs 01-05 | Endpoints, request/response |
+| **Services** | Spec 06, 07 | Clean Architecture, Service Objects |
+| **Components (FE)** | Spec 06 | Atomic Design, estructura |
+| **Hooks (FE)** | Spec 06, 07 | Custom Hooks, Optimistic Updates |
+| **Testing** | Spec 07 | RSpec, Jest, coverage |
+| **Linters** | Spec 07 | RuboCop, ESLint, Prettier |
+| **Git** | Spec 07 | Git Flow, Conventional Commits |
+| **Docker** | Spec 08 | docker-compose.yml |
+| **CI/CD** | Spec 08 | GitHub Actions |
+| **Deploy** | Spec 08 | AWS architecture |
+| **UML** | Spec 09 | 5 diagramas |
+
+---
+
 ## Modelo de Datos Consolidado
 
 ### Entidades Principales
@@ -370,6 +510,54 @@ jobs:
   - GET `/facts` - Lista de facts paginados (332 facts, 10 por página)
   - Sin autenticación requerida
   - Rate limiting no documentado (usar con cuidado)
+
+---
+
+## Dependencias Principales
+
+### Backend (Ruby on Rails)
+
+| Gem | Propósito | Spec Referencia |
+|-----|-----------|-----------------|
+| `devise-jwt` | Autenticación JWT | 02-INICIO-SESION |
+| `rack-attack` | Rate limiting | 02-INICIO-SESION |
+| `faraday` | Consumo de API externa | 03-CONSULTAR-MARCAR-FACTS |
+| `redis` | Cache y sesiones | 06-ARQUITECTURA |
+| `sidekiq` | Background jobs | 08-BONUS |
+| `rspec-rails` | Testing | 07-CALIDAD |
+| `factory_bot_rails` | Test data | 07-CALIDAD |
+| `rubocop` | Linter | 07-CALIDAD |
+| `simplecov` | Code coverage | 07-CALIDAD |
+| `kaminari` | Paginación | 04-LISTA-FACTS-GUSTADOS, 05-FACTS-POPULARES |
+
+### Frontend (React + TypeScript)
+
+| Paquete | Propósito | Spec Referencia |
+|---------|-----------|-----------------|
+| `axios` | HTTP client | 03-CONSULTAR-MARCAR-FACTS |
+| `@reduxjs/toolkit` | Estado global | 06-ARQUITECTURA |
+| `react-router-dom` | Enrutamiento | 06-ARQUITECTURA |
+| `react-hook-form` | Formularios | 01-REGISTRO, 02-INICIO-SESION |
+| `zod` | Validación de schemas | 01-REGISTRO, 02-INICIO-SESION |
+| `jest` | Testing | 07-CALIDAD |
+| `@testing-library/react` | React testing | 07-CALIDAD |
+| `eslint` | Linter | 07-CALIDAD |
+| `prettier` | Code formatter | 07-CALIDAD |
+| `tailwindcss` | Estilos (bonus) | 08-BONUS |
+
+### Infraestructura
+
+| Servicio | Propósito | Spec Referencia |
+|----------|-----------|-----------------|
+| **PostgreSQL** | Base de datos relacional | 06-ARQUITECTURA |
+| **Redis** | Cache, sesiones, rate limiting | 06-ARQUITECTURA |
+| **AWS S3** | Frontend estático | 08-BONUS |
+| **AWS CloudFront** | CDN | 08-BONUS |
+| **AWS ECS/EC2** | Backend containers | 08-BONUS |
+| **AWS RDS** | PostgreSQL administrado | 08-BONUS |
+| **AWS ElastiCache** | Redis administrado | 08-BONUS |
+| **Docker** | Contenedores | 08-BONUS |
+| **GitHub Actions** | CI/CD | 08-BONUS |
 
 ---
 
