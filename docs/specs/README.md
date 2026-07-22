@@ -166,6 +166,11 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 | ¿Qué patrones usar? | 06-ARQUITECTURA + 07-CALIDAD | Todas |
 | ¿Cómo configurar Docker? | 08-BONUS | 06 |
 | ¿Cómo son los diagramas? | 09-UML | 06 |
+| ¿Cómo manejar errores? | 06-ARQUITECTURA (Error Handling) | 07 |
+| ¿Cómo configurar logging? | 06-ARQUITECTURA (Logging) | 07 |
+| ¿Cómo documentar seguridad? | 06-ARQUITECTURA (Security) | 07, 08 |
+| ¿Cómo optimizar performance? | 06-ARQUITECTURA (Performance) | 07 |
+| ¿Cómo nombrar variables? | 07-CALIDAD (Convenciones) | Todas |
 
 ---
 
@@ -215,6 +220,11 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 | **Rate Limiting** | Limitación de peticiones por tiempo | 02-INICIO-SESION |
 | **Git Flow** | Convención de ramas para desarrollo | 07-CALIDAD |
 | **Conventional Commits** | Convención de mensajes de commit | 07-CALIDAD |
+| **Error Boundary** | Componente React para capturar errores de renderizado | 06-ARQUITECTURA |
+| **OWASP** | Open Web Application Security Project - estándares de seguridad | 06-ARQUITECTURA |
+| **TTFB** | Time to First Byte - métrica de performance | 06-ARQUITECTURA |
+| **LCP** | Largest Contentful Paint - métrica de Core Web Vitals | 06-ARQUITECTURA |
+| **Debounce** | Técnica para limitar ejecución de funciones | 06-ARQUITECTURA |
 
 ---
 
