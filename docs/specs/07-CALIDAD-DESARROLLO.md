@@ -100,9 +100,106 @@ end
 
 ---
 
-## 2. Estrategia de Testing (10 pts)
+## 2. Patrones de Diseño Implementados
 
-### 2.1 Niveles de Testing
+### 2.1 Frontend (React + TypeScript)
+
+| Patrón | Uso en el Proyecto | Beneficio |
+|--------|-------------------|-----------|
+| **Atomic Design** | Organización de componentes (atoms → pages) | Reutilización, testing, escalabilidad |
+| **Custom Hooks** | `useAuth`, `useFacts`, `useLike`, `usePagination` | Reutilización de lógica de estado |
+| **Container/Presentational** | Separación de lógica vs UI | Componentes testables y flexibles |
+| **API Client Pattern** | Axios instance centralizada en `services/` | Interceptores, token management |
+| **Error Boundaries** | Componente `ErrorBoundary` envolviendo rutas | Evita crashes, UI de fallback |
+| **Optimistic Updates** | En `useLike` antes de confirmar con backend | UX instantánea, mejor percepción |
+| **Redux/Zustand** | Estado global en `store/` con slices | Estado predecible, debugging fácil |
+| **React Router** | Enrutamiento declarativo en `router/` | Navegación SPA, rutas protegidas |
+
+### 2.2 Backend (Ruby on Rails)
+
+| Patrón | Uso en el Proyecto | Beneficio |
+|--------|-------------------|-----------|
+| **Clean Architecture** | Capas: Entities → UseCases → Controllers → Services | Separación clara, testable, escalable |
+| **Service Objects** | `AuthService`, `FactService`, `LikeService` | Lógica de negocio encapsulada |
+| **Circuit Breaker** | En `CatFactApiService` para API externa | Resiliencia, no rompe si falla API |
+| **Null Object** | Para evitar nil checks en relaciones | Código limpio, menos condicionales |
+| **ActiveRecord** | Acceso a datos (Repository implícito) | Estándar Rails, ORM robusto |
+| **Serializers** | Formato de respuesta en `app/serializers/` | Consistencia, desacople de formato |
+
+---
+
+## 3. Flujo de Datos (Request Lifecycle)
+
+### Frontend → Backend
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USUARIO hace clic en "Like"                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. UI (FactCard.tsx)                                                   │
+│     └── onClick → llama a useLike().handleLike(factId)                 │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  2. HOOK (useLike.ts) - Optimistic Update                              │
+│     ├── setLiked(true)           ← Actualiza UI INSTANTÁNEO           │
+│     └── factsService.like(id)    ← Llama al backend                   │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  3. SERVICE (factsService.ts)                                           │
+│     └── apiClient.post('/facts/1/like')                                │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  4. API CLIENT (apiClient.ts)                                           │
+│     └── Agrega header: Authorization: Bearer <jwt_token>              │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  5. BACKEND (FactsController)                                           │
+│     └── like_action → llama a LikeFactUseCase.execute(user, fact_id)  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  6. USE CASE (like_fact.rb)                                             │
+│     ├── Verifica si ya existe like (UserLike.find_by)                 │
+│     ├── Crea like si no existe                                         │
+│     └── Retorna { liked: true, likes_count: 43 }                      │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  7. SERIALIZER (fact_serializer.rb)                                     │
+│     └── Formatea respuesta JSON con estructura estándar                │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  8. BACKEND → FRONTEND                                                  │
+│     └── Response JSON: { success: true, data: { liked: true, ... } }   │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  9. HOOK actualiza estado final                                         │
+│     └── Si falló, revierte el optimistic update                       │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. Estrategia de Testing (10 pts)
+
+### 4.1 Niveles de Testing
 
 | Nivel | Tipo | Cobertura Objetivo | Herramientas |
 |-------|------|-------------------|--------------|
@@ -110,7 +207,7 @@ end
 | **Integration** | Interacción entre componentes | 60% mínimo | RSpec, FactoryBot |
 | **E2E** | Flujo completo de usuario | 20% mínimo | Cypress o Playwright |
 
-### 2.2 Backend - Ruby on Rails (RSpec)
+### 4.2 Backend - Ruby on Rails (RSpec)
 
 **Estructura de Tests**:
 ```
@@ -174,7 +271,7 @@ RSpec.describe 'Auth API', type: :request do
 end
 ```
 
-### 2.3 Frontend - React + TypeScript (Jest)
+### 4.3 Frontend - React + TypeScript (Jest)
 
 **Estructura de Tests**:
 ```
@@ -227,7 +324,7 @@ describe('FactCard', () => {
 });
 ```
 
-### 2.4 Coverage Mínimo
+### 4.4 Coverage Mínimo
 
 | Métrica | Backend | Frontend |
 |---------|---------|----------|
@@ -237,9 +334,9 @@ describe('FactCard', () => {
 
 ---
 
-## 3. Configuración de Linters (5 pts)
+## 5. Configuración de Linters (5 pts)
 
-### 3.1 Backend - RuboCop
+### 5.1 Backend - RuboCop
 
 **Archivo `.rubocop.yml`**:
 ```yaml
@@ -284,7 +381,7 @@ bundle exec rubocop
 bundle exec rubocop -A
 ```
 
-### 3.2 Frontend - ESLint + Prettier
+### 5.2 Frontend - ESLint + Prettier
 
 **Archivo `.eslintrc.js`**:
 ```javascript
@@ -339,9 +436,9 @@ npm run format
 
 ---
 
-## 4. Buenas Prácticas de Git (5 pts)
+## 6. Buenas Prácticas de Git (5 pts)
 
-### 4.1 Convención de Ramas - Git Flow
+### 6.1 Convención de Ramas - Git Flow
 
 ```
 main (producción)
@@ -367,7 +464,7 @@ main (producción)
 | `release/*` | `develop` | `main` + `develop` | Preparar release |
 | `hotfix/*` | `main` | `main` + `develop` | Correcciones urgentes |
 
-### 4.2 Convenção de Commits - Conventional Commits
+### 6.2 Convenção de Commits - Conventional Commits
 
 **Formato**:
 ```
@@ -399,14 +496,14 @@ test(auth): add registration tests
 chore(deps): update ruby version
 ```
 
-### 4.3 Reglas de Commits
+### 6.3 Reglas de Commits
 
 - **Commits pequeños**: Máximo 200 líneas por commit
 - **Un commit = una tarea**: No mezclar funcionalidades
 - **Mensaje claro**: Describir qué y por qué (no cómo)
 - **Tests pasando**: Nunca commit con tests rotos
 
-### 4.4 Configuración de Git
+### 6.4 Configuración de Git
 
 **`.gitignore`**:
 ```gitignore

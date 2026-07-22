@@ -126,6 +126,185 @@ Esta especificación define la arquitectura del sistema SSCatFacts, estableciend
 
 ---
 
+## Arquitectura por Capas y Patrones de Diseño
+
+### Frontend: Atomic Design + Patrones Adicionales
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         FRONTEND (React + TypeScript)                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  PATRÓN PRINCIPAL: ATOMIC DESIGN                                            │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                                                                     │   │
+│  │   atoms/           molecules/        organisms/                     │   │
+│  │   ┌─────┐         ┌─────────┐       ┌─────────────┐               │   │
+│  │   │     │   ──▶   │         │  ──▶  │             │               │   │
+│  │   └─────┘         └─────────┘       └─────────────┘               │   │
+│  │   Básicos         Combinación       Complejos                      │   │
+│  │                                                                     │   │
+│  │                          │                                          │   │
+│  │                          ▼                                          │   │
+│  │   templates/            pages/                                      │   │
+│  │   ┌─────────┐          ┌─────────┐                                 │   │
+│  │   │         │    ──▶   │         │                                 │   │
+│  │   └─────────┘          └─────────┘                                 │   │
+│  │   Layouts              Rutas                                        │   │
+│  │                                                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+│  ESTRUCTURA DE CARPETAS:                                                    │
+│                                                                             │
+│  src/                                                                       │
+│  ├── atoms/              ← Componentes básicos                             │
+│  │   ├── Button/                                                            │
+│  │   ├── Input/                                                             │
+│  │   ├── Card/                                                              │
+│  │   └── Icon/                                                              │
+│  │                                                                         │
+│  ├── molecules/          ← Combinaciones simples                           │
+│  │   ├── LoginForm/                                                         │
+│  │   ├── FactCard/                                                          │
+│  │   └── SearchBar/                                                         │
+│  │                                                                         │
+│  ├── organisms/          ← Componentes complejos                           │
+│  │   ├── Header/                                                            │
+│  │   ├── FactsList/                                                         │
+│  │   └── FavoritesTable/                                                    │
+│  │                                                                         │
+│  ├── templates/          ← Layouts de página                               │
+│  │   ├── AuthTemplate/                                                      │
+│  │   └── DashboardTemplate/                                                 │
+│  │                                                                         │
+│  ├── pages/              ← Páginas completas (rutas)                       │
+│  │   ├── LoginPage/                                                         │
+│  │   ├── FactsPage/                                                         │
+│  │   └── FavoritesPage/                                                     │
+│  │                                                                         │
+│  ├── hooks/              ← Custom hooks                                    │
+│  │   ├── useAuth.ts                                                         │
+│  │   ├── useFacts.ts                                                        │
+│  │   ├── useLike.ts        ← Incluye Optimistic Updates                    │
+│  │   └── usePagination.ts                                                   │
+│  │                                                                         │
+│  ├── services/           ← Capa API                                        │
+│  │   ├── apiClient.ts      ← Axios instance                                │
+│  │   ├── authService.ts                                                    │
+│  │   └── factsService.ts                                                    │
+│  │                                                                         │
+│  ├── store/              ← Estado global (Redux Toolkit o Zustand)         │
+│  │   ├── slices/                                                            │
+│  │   │   ├── authSlice.ts                                                   │
+│  │   │   ├── factsSlice.ts                                                  │
+│  │   │   └── uiSlice.ts                                                     │
+│  │   └── store.ts                                                           │
+│  │                                                                         │
+│  ├── components/                                                           │
+│  │   └── ErrorBoundary.tsx  ← Manejo de errores                            │
+│  │                                                                         │
+│  ├── router/             ← React Router                                    │
+│  │   └── AppRouter.tsx     ← Configuración de rutas                        │
+│  │                                                                         │
+│  ├── types/              ← TypeScript interfaces                           │
+│  └── utils/              ← Helpers puros                                   │
+│                                                                             │
+│  PATRONES IMPLEMENTADOS:                                                    │
+│  • Atomic Design → Organización de componentes por complejidad             │
+│  • Container/Presentational → Separación lógica vs presentación            │
+│  • API Client Pattern → Centralización de llamadas HTTP (Axios)            │
+│  • Error Boundaries → Manejo elegante de errores                           │
+│  • Optimistic Updates → UX instantánea en likes                            │
+│  • Custom Hooks → Reutilización de lógica de estado                        │
+│  • Redux/Zustand → Estado global predecible                                │
+│  • React Router → Enrutamiento declarativo                                 │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Backend: Clean Architecture + Patrones Adicionales
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    BACKEND (Ruby on Rails API)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  PATRÓN PRINCIPAL: CLEAN ARCHITECTURE                                      │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                                                                     │   │
+│  │   CAPA 1: ENTITIES (Domain)                                        │   │
+│  │   ┌─────────────────────────────────────────────────────────────┐   │   │
+│  │   │  app/models/                                                │   │   │
+│  │   │  ├── user.rb                                                │   │   │
+│  │   │  ├── cat_fact.rb                                            │   │   │
+│  │   │  └── user_like.rb                                           │   │   │
+│  │   └─────────────────────────────────────────────────────────────┘   │   │
+│  │                              │                                      │   │
+│  │                              ▼                                      │   │
+│  │   CAPA 2: USE CASES (Business Rules)                               │   │
+│  │   ┌─────────────────────────────────────────────────────────────┐   │   │
+│  │   │  app/use_cases/                                             │   │   │
+│  │   │  ├── auth/                                                  │   │   │
+│  │   │  │   ├── register_user.rb                                   │   │   │
+│  │   │  │   └── login_user.rb                                      │   │   │
+│  │   │  ├── facts/                                                 │   │   │
+│  │   │  │   ├── fetch_random_fact.rb                               │   │   │
+│  │   │  │   ├── list_facts.rb                                      │   │   │
+│  │   │  │   └── get_popular_facts.rb                               │   │   │
+│  │   │  └── likes/                                                 │   │   │
+│  │   │      ├── like_fact.rb                                       │   │   │
+│  │   │      ├── unlike_fact.rb                                     │   │   │
+│  │   │      └── get_user_favorites.rb                              │   │   │
+│  │   └─────────────────────────────────────────────────────────────┘   │   │
+│  │                              │                                      │   │
+│  │                              ▼                                      │   │
+│  │   CAPA 3: INTERFACE ADAPTERS (Controllers)                         │   │
+│  │   ┌─────────────────────────────────────────────────────────────┐   │   │
+│  │   │  app/controllers/api/v1/                                    │   │   │
+│  │   │  ├── auth_controller.rb                                     │   │   │
+│  │   │  ├── facts_controller.rb                                    │   │   │
+│  │   │  └── users_controller.rb                                    │   │   │
+│  │   └─────────────────────────────────────────────────────────────┘   │   │
+│  │                              │                                      │   │
+│  │                              ▼                                      │   │
+│  │   CAPA 4: FRAMEWORKS & DRIVERS (External)                          │   │
+│  │   ┌─────────────────────────────────────────────────────────────┐   │   │
+│  │   │  app/services/                                              │   │   │
+│  │   │  ├── external/                                              │   │   │
+│  │   │  │   └── cat_fact_api_service.rb  ← API externa + Circuit  │   │   │
+│  │   │  │                                        Breaker          │   │   │
+│  │   │  ├── auth/                                                  │   │   │
+│  │   │  │   └── jwt_service.rb                                     │   │   │
+│  │   │  └── cache/                                                 │   │   │
+│  │   │      └── redis_cache_service.rb                             │   │   │
+│  │   └─────────────────────────────────────────────────────────────┘   │   │
+│  │                              │                                      │   │
+│  │                              ▼                                      │   │
+│  │   CAPA 5: SERIALIZERS (Output Formatting)                          │   │
+│  │   ┌─────────────────────────────────────────────────────────────┐   │   │
+│  │   │  app/serializers/                                           │   │   │
+│  │   │  ├── user_serializer.rb                                     │   │   │
+│  │   │  ├── fact_serializer.rb                                     │   │   │
+│  │   │  └── error_serializer.rb                                    │   │   │
+│  │   └─────────────────────────────────────────────────────────────┘   │   │
+│  │                                                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+│  PATRONES IMPLEMENTADOS:                                                    │
+│  • Clean Architecture → Separación por capas de dependencia                │
+│  • Service Objects → Lógica de negocio encapsulada                         │
+│  • Circuit Breaker → Resiliencia con API externa                           │
+│  • Null Object → Manejo elegante de objetos nulos                          │
+│  • ActiveRecord → Acceso a datos (Repository implícito)                   │
+│  • Serializers → Formato de respuesta JSON consistente                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Contratos de API
 
 ### Estructura de Respuesta Estándar
@@ -277,6 +456,32 @@ NODE_ENV=production
 |--------|----------|-------------|------|
 | GET | `/api/v1/users/favorites` | Lista favoritos | Sí |
 | DELETE | `/api/v1/users/favorites/:factId` | Eliminar favorito | Sí |
+
+---
+
+## Decisiones de Arquitectura y Alternativas No Implementadas
+
+### Patrones No Implementados (y por qué)
+
+| Patrón | ¿Por qué no se implementó? | ¿Cuándo implementarlo? |
+|--------|----------------------------|------------------------|
+| **Repository Pattern** | Rails ya tiene ActiveRecord (es un Repository implícito) | Si se cambia a ORM custom o microservicios |
+| **Value Objects** | Pocos casos de uso en esta app específica | Si el dominio crece (e-commerce, pagos complejos) |
+| **Decorator Pattern** | Serializers son suficientes para esta app | Si se necesita lógica de presentación compleja |
+| **Domain Events** | No hay event-driven workflow | Si se integran múltiples sistemas |
+| **State Machines (XState)** | Estados de UI son simples | Si hay flujos complejos con múltiples estados |
+| **HOC (Higher-Order Components)** | Custom Hooks los reemplazan y son más limpios | Nunca (Hooks es el estándar actual) |
+| **Render Props** | Custom Hooks los reemplazan | Nunca (Hooks es el estándar actual) |
+
+### Arquitecturas No Implementadas
+
+| Arquitectura | ¿Por qué no se implementó? | ¿Cuándo implementarlo? |
+|--------------|----------------------------|------------------------|
+| **Microservicios** | App monolítica suficiente para el alcance | Equipo > 5 devs, dominios distintos |
+| **GraphQL** | REST es más simple, frontend conoce sus queries | Múltiples clientes con diferentes necesidades |
+| **Event Sourcing** | No hay necesidad de auditoría completa | Si se requiere historial completo de cambios |
+| **Serverless** | Requiere más configuración AWS | Tráfico variable/estacional extremo |
+| **CQRS** | CRUD simple, no hay separación lectura/escritura | Apps con reads extremadamente optimizados |
 
 ---
 
