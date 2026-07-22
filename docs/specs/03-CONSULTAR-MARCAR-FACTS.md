@@ -327,11 +327,35 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ### HU-05: Como usuario autenticado, quiero ver cat facts aleatorios para divertirme y aprender.
 
+**Alcance - Incluido:**
+- Botón "Nuevo Fact" que consulta API externa
+- Indicador de carga durante consulta
+- Manejo de errores de API externa
+- Cache de facts consultados
+
+**Alcance - No incluido:**
+- Historial de facts consultados
+- Favoritos en la vista de facts
+- Compartir facts en redes sociales
+- Facts por categoría
+
 **Given** que el usuario está en la página principal autenticado
 **When** hace clic en "Nuevo Fact"
 **Then** el sistema muestra un nuevo cat fact de la API externa
 
 ### HU-06: Como usuario autenticado, quiero marcar los facts que me gustan para guardarlos.
+
+**Alcance - Incluido:**
+- Corazón como botón de like
+- Optimistic update (UI instantánea)
+- Contador de likes actualizado
+- Prevención de likes duplicados
+
+**Alcance - No incluido:**
+- Comentarios en facts
+- Rating (1-5 estrellas)
+- Compartir fact específico
+- Notificar al autor del like
 
 **Given** que el usuario ve un cat fact
 **When** hace clic en el corazón para marcar like
@@ -339,11 +363,34 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ### HU-07: Como usuario autenticado, quiero quitar mi like si cambio de opinión.
 
+**Alcance - Incluido:**
+- Toggle del corazón (lleno/vacío)
+- Optimistic update
+- Contador de likes actualizado
+- Confirmación visual inmediata
+
+**Alcance - No incluido:**
+- Historial de likes removidos
+- Límite de cambios por día
+- Notificación de cambio
+
 **Given** que el usuario tiene marcado like a un fact
 **When** hace clic en el corazón lleno
 **Then** el sistema elimina el like y muestra el corazón vacío
 
 ### HU-07b: Como usuario autenticado, quiero ver una lista de facts para explorar más contenido.
+
+**Alcance - Incluido:**
+- Lista paginada de facts
+- Navegación entre páginas (page, limit)
+- Indicador de carga
+- Estado de like por fact
+
+**Alcance - No incluido:**
+- Búsqueda de facts
+- Filtros por categoría
+- Ordenamiento personalizado
+- Infinite scroll
 
 **Given** que el usuario accede a la sección de facts
 **When** se carga la página

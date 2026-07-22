@@ -269,17 +269,50 @@ Igual que en especificación 03 - Consultar y Marcar Cat Facts
 
 ### HU-11: Como usuario autenticado, quiero ver qué facts son los más populares para descubrir contenido de calidad.
 
+**Alcance - Incluido:**
+- Ranking de facts por cantidad de likes
+- Top N facts (configurable)
+- Indicador de like del usuario actual
+- Tiempo de respuesta < 1s
+
+**Alcance - No incluido:**
+- Ranking por período de tiempo
+- Tendencias (facts que suben rápido)
+- Recomendaciones personalizadas
+- Ranking global vs por usuario
+
 **Given** que el usuario accede a "Facts Populares"
 **When** se carga la página
 **Then** el sistema muestra el ranking de facts con más likes
 
 ### HU-12: Como usuario autenticado, quiero filtrar facts populares por período.
 
+**Alcance - Incluido:**
+- Filtros: Última semana, Último mes, Último año, Todo
+- Actualización del ranking al cambiar filtro
+- Estado activo del filtro seleccionado
+
+**Alcance - No incluido:**
+- Rango de fechas personalizado
+- Comparación entre períodos
+- Exportar datos del período
+
 **Given** que el usuario está en la vista de facts populares
 **When** selecciona "Último mes"
 **Then** el sistema muestra solo facts popularizados en el último mes
 
 ### HU-13: Como usuario autenticado, quiero dar like desde la vista de populares.
+
+**Alcance - Incluido:**
+- Like/unlike directo desde el ranking
+- Actualización inmediata del ranking
+- Optimistic update
+- Contador de likes actualizado
+
+**Alcance - No incluido:**
+- Like múltiple (selección en lote)
+- Notificar cuando un fact tuyo sube al ranking
+- Compartir fact popular
 
 **Given** que el usuario ve un fact popular sin su like
 **When** hace clic en el corazón

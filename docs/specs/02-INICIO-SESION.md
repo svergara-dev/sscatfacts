@@ -202,11 +202,35 @@ CREATE INDEX idx_login_attempts_ip ON login_attempts(ip_address, attempted_at);
 
 ### HU-03: Como usuario registrado, quiero iniciar sesión para acceder a funcionalidades protegidas.
 
+**Alcance - Incluido:**
+- Autenticación con username + password
+- JWT token con expiración 24h
+- Error genérico para credenciales inválidas
+- Redirección a dashboard post-login
+
+**Alcance - No incluido:**
+- "Recordarme" (persistencia de sesión)
+- Login con OAuth (Google, GitHub)
+- Multi-device sessions
+- Cambio de contraseña
+
 **Given** que el usuario está en la página de login
 **When** ingresa credenciales válidas
 **Then** el sistema autentica y redirige al dashboard
 
 ### HU-04: Como usuario registrado, quiero que el sistema proteja mi cuenta con intentos limitados.
+
+**Alcance - Incluido:**
+- Límite de 5 intentos por minuto
+- Bloqueo temporal de 15 minutos
+- Mensaje de advertencia al acercarse al límite
+- Reset del contador tras intento exitoso
+
+**Alcance - No incluido:**
+- Notificación por email de intentos sospechosos
+- Bloqueo permanente
+- Verificación por SMS
+- Registro de IP del atacante
 
 **Given** que un usuario intenta login con credenciales incorrectas
 **When** supera 5 intentos en 1 minuto

@@ -213,17 +213,50 @@ LIMIT $2 OFFSET $3;
 
 ### HU-08: Como usuario autenticado, quiero ver todos mis facts favoritos para revisarlos después.
 
+**Alcance - Incluido:**
+- Lista paginada de facts favoritos
+- Ordenamiento por fecha (más reciente primero)
+- Texto del fact y fecha de like
+- Contador total de favoritos
+
+**Alcance - No incluido:**
+- Exportar favoritos (CSV, PDF)
+- Compartir lista de favoritos
+- Carpeta/categoría de favoritos
+- Búsqueda dentro de favoritos
+
 **Given** que el usuario tiene facts marcados como favoritos
 **When** accede a "Mis Favoritos"
 **Then** el sistema muestra la lista paginada de facts
 
 ### HU-09: Como usuario autenticado, quiero quitar facts de mi lista de favoritos.
 
+**Alcance - Incluido:**
+- Botón de eliminar por fact
+- Confirmación antes de eliminar
+- Actualización inmediata de la lista
+- Contador actualizado
+
+**Alcance - No incluido:**
+- Eliminación múltiple (selección en lote)
+- Papelera de reciclaje (restaurar)
+- Notificación de confirmación
+
 **Given** que el usuario está en su lista de favoritos
 **When** hace clic en eliminar un fact
 **Then** el sistema elimina el fact de la lista y actualiza el contador
 
 ### HU-10: Como usuario autenticado, quiero saber cuántos facts tengo guardados.
+
+**Alcance - Incluido:**
+- Contador visible en la vista de favoritos
+- Actualización en tiempo real
+- Formato legible (ej: "48 facts")
+
+**Alcance - No incluido:**
+- Estadísticas detalladas (likes por día, etc.)
+- Gráficos de actividad
+- Comparación con otros usuarios
 
 **Given** que el usuario accede a su perfil o lista de favoritos
 **When** se carga la página

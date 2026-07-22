@@ -207,11 +207,35 @@ CREATE INDEX idx_users_username ON users(username);
 
 ### HU-01: Como usuario nuevo, quiero registrarme en la plataforma para poder acceder a funcionalidades de cat facts.
 
+**Alcance - Incluido:**
+- Validación de username único
+- Contraseña ≥ 8 caracteres
+- Confirmación de contraseña
+- Rate limiting (5 intentos/min por IP)
+- Respuesta con ID y datos del usuario (sin contraseña)
+
+**Alcance - No incluido:**
+- Recuperación de contraseña
+- Verificación de email
+- Perfil de usuario
+- Login automático post-registro
+- OAuth (Google, GitHub, etc.)
+
 **Given** que el usuario está en la página de registro
 **When** ingresa un username válido, contraseña >= 8 caracteres y confirma la contraseña
 **Then** el sistema crea la cuenta y muestra mensaje de éxito
 
 ### HU-02: Como usuario nuevo, quiero que el sistema valide que mi username esté disponible
+
+**Alcance - Incluido:**
+- Validación en tiempo real (debounce)
+- Mensaje de error claro si username ya existe
+- HTTP 409 para conflicto
+
+**Alcance - No incluido:**
+- Sugerencias de usernames alternativos
+- Validación de caracteres especiales
+- Disponibilidad en tiempo real (solo al enviar)
 
 **Given** que el usuario está en la página de registro
 **When** ingresa un username que ya existe en el sistema
