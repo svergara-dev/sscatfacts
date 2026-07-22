@@ -33,6 +33,7 @@ Este archivo proporciona contexto a los AI assistants sobre cómo trabajar con e
 | **Circuit Breaker** | Conexión con API externa catfact.ninja |
 | **Null Object** | Respuestas vacías de la API externa |
 | **Optimistic Updates** | Frontend — likes en UI antes de confirmar backend |
+| **Infinite Scroll** | Frontend — carga incremental de datos al hacer scroll |
 | **Error Boundary** | Frontend — captura de errores de renderizado |
 | **Singleton** | Servicios con estado global (Cache, Logger) |
 

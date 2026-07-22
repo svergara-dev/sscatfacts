@@ -217,6 +217,7 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 | **Service Object** | Patrón para encapsular lógica de negocio | 07-CALIDAD |
 | **Circuit Breaker** | Patrón para resiliencia con servicios externos | 07-CALIDAD |
 | **Optimistic Update** | Actualización de UI antes de confirmar con backend | 07-CALIDAD |
+| **Infinite Scroll** | Carga incremental de datos al hacer scroll | 06-ARQUITECTURA |
 | **Rate Limiting** | Limitación de peticiones por tiempo | 02-INICIO-SESION |
 | **Git Flow** | Convención de ramas para desarrollo | 07-CALIDAD |
 | **Conventional Commits** | Convención de mensajes de commit | 07-CALIDAD |
@@ -225,6 +226,8 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 | **TTFB** | Time to First Byte - métrica de performance | 06-ARQUITECTURA |
 | **LCP** | Largest Contentful Paint - métrica de Core Web Vitals | 06-ARQUITECTURA |
 | **Debounce** | Técnica para limitar ejecución de funciones | 06-ARQUITECTURA |
+| **Responsive Design** | Diseño adaptable a diferentes tamaños de pantalla | 06-ARQUITECTURA |
+| **Breakpoint** | Punto de quiebre para diseño responsive (sm, md, lg) | 06-ARQUITECTURA |
 
 ---
 

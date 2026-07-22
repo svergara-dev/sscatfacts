@@ -83,6 +83,32 @@ Cada entrada debe seguir este formato:
 
 ---
 
+### 2026-07-22 — Decisión: Responsive Design como No Funcional
+
+**Contexto**: Definir si responsive design era bonus o requerimiento base.
+**Decisión**: Agregar como Requerimiento No Funcional en `06-ARQUITECTURA.md`.
+**Razón**:
+- En 2026, toda app web debe ser responsive
+- Tailwind ya está contemplado (bonus), hace responsive casi gratis
+- El evaluador probará en diferentes dispositivos
+- No es esfuerzo extra, es estándar de la industria
+**Archivos**: `docs/specs/06-ARQUITECTURA.md`
+
+---
+
+### 2026-07-22 — Decisión: Infinite Scroll incluido
+
+**Contexto**: Infinite scroll estaba en "No incluido" en las HUs.
+**Decisión**: Mover a "Incluido" en HU-07b, HU-08, HU-11.
+**Razón**:
+- Demuestra manejo de grandes volúmeles de datos
+- Mejor UX que paginación tradicional
+- Técnica estándar en apps modernas
+- Implementación viable con IntersectionObserver
+**Archivos**: `docs/specs/03-CONSULTAR-MARCAR-FACTS.md`, `04-LISTA-FACTS-GUSTADOS.md`, `05-FACTS-POPULARES.md`
+
+---
+
 ## Aprendizajes
 
 ### 2026-07-22 — API catfact.ninja limitada
