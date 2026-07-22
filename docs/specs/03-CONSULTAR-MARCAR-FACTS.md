@@ -381,10 +381,11 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 ### HU-07b: Como usuario autenticado, quiero ver una lista de facts para explorar más contenido.
 
 **Alcance - Incluido:**
-- Lista paginada de facts
-- Navegación entre páginas (page, limit)
-- Indicador de carga
+- Lista de facts con infinite scroll
+- Carga incremental al hacer scroll
+- Indicador de carga durante fetch
 - Estado de like por fact
+- Manejo de grandes volúmenes de datos
 
 **Alcance - No incluido:**
 - Búsqueda de facts

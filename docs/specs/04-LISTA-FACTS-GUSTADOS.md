@@ -214,7 +214,8 @@ LIMIT $2 OFFSET $3;
 ### HU-08: Como usuario autenticado, quiero ver todos mis facts favoritos para revisarlos después.
 
 **Alcance - Incluido:**
-- Lista paginada de facts favoritos
+- Lista de facts favoritos con infinite scroll
+- Carga incremental al hacer scroll
 - Ordenamiento por fecha (más reciente primero)
 - Texto del fact y fecha de like
 - Contador total de favoritos

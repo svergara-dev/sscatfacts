@@ -270,8 +270,8 @@ Igual que en especificación 03 - Consultar y Marcar Cat Facts
 ### HU-11: Como usuario autenticado, quiero ver qué facts son los más populares para descubrir contenido de calidad.
 
 **Alcance - Incluido:**
-- Ranking de facts por cantidad de likes
-- Top N facts (configurable)
+- Ranking de facts por cantidad de likes con infinite scroll
+- Carga incremental al hacer scroll
 - Indicador de like del usuario actual
 - Tiempo de respuesta < 1s
 

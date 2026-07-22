@@ -74,6 +74,16 @@ Esta especificación define la arquitectura del sistema SSCatFacts, estableciend
 - Rate limiting en endpoints públicos
 - Sanitización de inputs en ambos lados
 
+### Usabilidad y Responsive Design
+- La aplicación debe visualizarse correctamente en dispositivos móviles, tablets y desktop
+- Breakpoints estándar con Tailwind CSS:
+  - Mobile: < 640px (`sm:`)
+  - Tablet: 640px - 1024px (`md:`)
+  - Desktop: > 1024px (`lg:`)
+- Componentes deben ser responsivos y adaptables
+- Navegación debe ser accesible en todos los tamaños de pantalla
+- Touch targets mínimo 44x44px en dispositivos móviles
+
 ---
 
 ## Arquitectura del Sistema
@@ -1138,6 +1148,62 @@ const useLike = () => {
   };
 
   return { handleLike };
+};
+```
+
+**5. Infinite Scroll:**
+```typescript
+// hooks/useInfiniteScroll.ts
+import { useEffect, useRef, useCallback } from 'react';
+
+export function useInfiniteScroll(onLoadMore: () => void, hasMore: boolean) {
+  const observer = useRef<IntersectionObserver | null>(null);
+  
+  const lastElementRef = useCallback((node: HTMLElement | null) => {
+    if (observer.current) observer.current.disconnect();
+    
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        onLoadMore();
+      }
+    });
+    
+    if (node) observer.current.observe(node);
+  }, [onLoadMore, hasMore]);
+  
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
+  
+  return { lastElementRef };
+}
+
+// Uso en componente
+const FactsList = () => {
+  const [facts, setFacts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  
+  const loadMore = async () => {
+    const newFacts = await factsService.getFacts(page + 1);
+    setFacts(prev => [...prev, ...newFacts]);
+    setHasMore(newFacts.length > 0);
+  };
+  
+  const { lastElementRef } = useInfiniteScroll(loadMore, hasMore);
+  
+  return (
+    <div>
+      {facts.map((fact, index) => (
+        <FactCard 
+          key={fact.id} 
+          fact={fact}
+          ref={index === facts.length - 1 ? lastElementRef : null}
+        />
+      ))}
+    </div>
+  );
 };
 ```
 
