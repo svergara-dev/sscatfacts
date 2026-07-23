@@ -397,7 +397,7 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 
 ### Frontend - React + TypeScript + Vite
 
-- **State Management**: Redux Toolkit o Zustand
+- **State Management**: React Context + Custom Hooks
 - **HTTP Client**: Axios con interceptores para JWT
 - **UI Components**: Tailwind CSS (bonus) o Material UI
 - **Form Validation**: React Hook Form + Zod
@@ -550,7 +550,7 @@ jobs:
 | Paquete | Propósito | Spec Referencia |
 |---------|-----------|-----------------|
 | `axios` | HTTP client | 03-CONSULTAR-MARCAR-FACTS |
-| `@reduxjs/toolkit` | Estado global | 06-ARQUITECTURA |
+| `react` + custom hooks | Estado global | 06-ARQUITECTURA |
 | `react-router-dom` | Enrutamiento | 06-ARQUITECTURA |
 | `react-hook-form` | Formularios | 01-REGISTRO, 02-INICIO-SESION |
 | `zod` | Validación de schemas | 01-REGISTRO, 02-INICIO-SESION |

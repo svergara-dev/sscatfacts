@@ -112,7 +112,7 @@ end
 | **API Client Pattern** | Axios instance centralizada en `services/` | Interceptores, token management |
 | **Error Boundaries** | Componente `ErrorBoundary` envolviendo rutas | Evita crashes, UI de fallback |
 | **Optimistic Updates** | En `useLike` antes de confirmar con backend | UX instantánea, mejor percepción |
-| **Redux/Zustand** | Estado global en `store/` con slices | Estado predecible, debugging fácil |
+| **React Context** | Estado global con `context/` y hooks | Estado predecible, sin dependencias externas |
 | **React Router** | Enrutamiento declarativo en `router/` | Navegación SPA, rutas protegidas |
 
 ### 2.2 Backend (Ruby on Rails)

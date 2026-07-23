@@ -163,7 +163,7 @@ sscatfacts/
 │   │   ├── pages/              ← Páginas (LoginPage, FactsPage)
 │   │   ├── hooks/              ← Custom hooks (useAuth, useFacts, useLike)
 │   │   ├── services/           ← Capa API (apiClient, authService)
-│   │   ├── store/              ← Estado global (Redux/Zustand)
+│   │   ├── context/            ← React Context (estado global)
 │   │   ├── types/              ← TypeScript interfaces
 │   │   └── utils/              ← Helpers puros
 │   ├── public/
@@ -217,7 +217,7 @@ sscatfacts/
 | **Presentación** | `atoms/`, `molecules/`, `organisms/` | UI Components |
 | **Contenedores** | `pages/`, `templates/` | Lógica de página |
 | **Lógica** | `hooks/`, `services/` | Reutilización de lógica |
-| **Estado** | `store/` | Estado global |
+| **Estado** | `context/` | Estado global (React Context) |
 | **Dominio** | `models/`, `use_cases/` | Reglas de negocio |
 | **Persistencia** | `db/`, `migrate/` | Datos |
 | **API** | `controllers/`, `serializers/` | Comunicación HTTP |
@@ -292,12 +292,9 @@ sscatfacts/
 │  │   ├── authService.ts                                                    │
 │  │   └── factsService.ts                                                    │
 │  │                                                                         │
-│  ├── store/              ← Estado global (Redux Toolkit o Zustand)         │
-│  │   ├── slices/                                                            │
-│  │   │   ├── authSlice.ts                                                   │
-│  │   │   ├── factsSlice.ts                                                  │
-│  │   │   └── uiSlice.ts                                                     │
-│  │   └── store.ts                                                           │
+│  ├── context/            ← React Context para estado global                │
+│  │   ├── AuthContext.tsx                                                     │
+│  │   └── FactsContext.tsx                                                    │
 │  │                                                                         │
 │  ├── components/                                                           │
 │  │   └── ErrorBoundary.tsx  ← Manejo de errores                            │
@@ -315,7 +312,7 @@ sscatfacts/
 │  • Error Boundaries → Manejo elegante de errores                           │
 │  • Optimistic Updates → UX instantánea en likes                            │
 │  • Custom Hooks → Reutilización de lógica de estado                        │
-│  • Redux/Zustand → Estado global predecible                                │
+│  • React Context → Estado global con hooks                                  │
 │  • React Router → Enrutamiento declarativo                                 │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘

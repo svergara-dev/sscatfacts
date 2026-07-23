@@ -287,7 +287,7 @@ Igual que en especificación 03 - Consultar y Marcar Cat Facts
 ### HU-12: Como usuario autenticado, quiero filtrar facts populares por período.
 
 **Alcance - Incluido:**
-- Filtros: Última semana, Último mes, Último año, Todo
+- Filtros: Última semana, Último mes, Todo
 - Actualización del ranking al cambiar filtro
 - Estado activo del filtro seleccionado
 

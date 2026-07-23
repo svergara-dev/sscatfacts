@@ -236,14 +236,14 @@ CREATE UNIQUE INDEX idx_users_username ON users(username);
 ### HU-02: Como usuario nuevo, quiero que el sistema valide que mi username esté disponible
 
 **Alcance - Incluido:**
-- Validación en tiempo real (debounce)
+- Validación al enviar formulario (submit)
 - Mensaje de error claro si username ya existe
 - HTTP 409 para conflicto
 
 **Alcance - No incluido:**
 - Sugerencias de usernames alternativos
 - Validación de caracteres especiales
-- Disponibilidad en tiempo real (solo al enviar)
+- Validación en tiempo real mientras el usuario escribe (debounce)
 
 **Given** que el usuario está en la página de registro
 **When** ingresa un username que ya existe en el sistema

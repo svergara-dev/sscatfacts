@@ -70,14 +70,14 @@ docker-compose ps
 curl http://localhost:3000/health
 
 # Verificar frontend
-curl http://localhost:5173
+curl http://localhost:8080
 ```
 
 ### 6. Acceder a la aplicación
 
 | Servicio | URL |
 |----------|-----|
-| **Frontend** | http://localhost:5173 |
+| **Frontend** | http://localhost:8080 |
 | **Backend API** | http://localhost:3000/api/v1 |
 | **PostgreSQL** | localhost:5432 |
 | **Redis** | localhost:6379 |
