@@ -281,15 +281,17 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 └─────────────────┘       └─────────────────┘
                                     │
                                     │
-                          ┌─────────────────┐
-                          │ login_attempts  │
-                          ├─────────────────┤
-                          │ id (PK)         │
-                          │ ip_address      │
-                          │ username        │
-                          │ attempted_at    │
-                          │ success         │
-                          └─────────────────┘
+┌─────────────────┐
+│ login_attempts  │
+├─────────────────┤
+│ id (PK)         │
+│ user_id (FK)    │
+│ ip_address      │
+│ username        │
+│ attempted_at    │
+│ success         │
+│ user_agent      │
+└─────────────────┘
 ```
 
 ---

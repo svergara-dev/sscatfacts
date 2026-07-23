@@ -108,6 +108,9 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
     password_digest VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    two_factor_secret VARCHAR(255),
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
