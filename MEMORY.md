@@ -109,6 +109,32 @@ Cada entrada debe seguir este formato:
 
 ---
 
+### 2026-07-22 — Decisión: Lefthook en lugar de Husky
+
+**Contexto**: Elegir herramienta para Git hooks (pre-commit, pre-push).
+**Decisión**: Usar Lefthook en lugar de Husky.
+**Razón**:
+- Lefthook funciona tanto para Ruby (backend) como JS (frontend)
+- Un solo archivo de configuración para ambos
+- Más rápido que Husky
+- No depende de npm para el backend
+**Archivos**: `docs/specs/07-CALIDAD-DESARROLLO.md` (sección 6.5), `AGENTS.md`
+
+---
+
+### 2026-07-22 — Decisión: SonarQube documentado pero no implementado
+
+**Contexto**: Considerar herramientas de análisis estático de código.
+**Decisión**: Documentar SonarQube como opción futura, no implementarlo ahora.
+**Razón**:
+- Para un test técnico, la configuración completa añade complejidad innecesaria
+- Los linters (RuboCop, ESLint) ya cubren la mayoría de issues
+- GitHub Actions ya ejecuta tests y lint en cada PR
+- En producción con múltiples desarrolladores sería recomendable
+**Archivos**: `docs/specs/README.md` (sección "Mejoras Futuras")
+
+---
+
 ## Aprendizajes
 
 ### 2026-07-22 — API catfact.ninja limitada

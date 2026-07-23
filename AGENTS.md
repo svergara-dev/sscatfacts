@@ -184,3 +184,42 @@ Las especificaciones completas están en `docs/specs/`:
 - [ ] Convencional Commits en mensajes
 - [ ] Git Flow para ramas
 - [ ] Documentación de decisiones de arquitectura
+
+---
+
+## Herramientas de Desarrollo
+
+| Herramienta | Uso | Config |
+|-------------|-----|--------|
+| **Lefthook** | Git hooks (pre-commit, pre-push) | `lefthook.yml` en raíz |
+| **RuboCop** | Linter Ruby (backend) | `.rubocop.yml` |
+| **ESLint** | Linter TypeScript (frontend) | `.eslintrc.js` |
+| **Prettier** | Code formatter | `.prettierrc` |
+| **RSpec** | Testing Ruby | `spec/` |
+| **Jest** | Testing TypeScript | `src/__tests__/` |
+
+### Lefthook (Git Hooks)
+
+```yaml
+# lefthook.yml
+pre-commit:
+  commands:
+    lint-backend:
+      glob: "*.rb"
+      run: bundle exec rubocop {staged_files}
+    lint-frontend:
+      glob: "*.{ts,tsx}"
+      run: npx eslint {staged_files}
+
+pre-push:
+  commands:
+    test-backend:
+      run: bundle exec rspec
+    test-frontend:
+      run: npm test
+```
+
+**¿Por qué Lefthook y no Husky?**
+- Funciona para Ruby (backend) y JS (frontend)
+- Un solo archivo de configuración
+- Más rápido que Husky
