@@ -574,6 +574,31 @@ jobs:
 
 ---
 
+## Mejoras Futuras (No implementadas)
+
+En un entorno de producción o si se requiere mayor calidad de código, se podrían implementar las siguientes herramientas:
+
+| Herramienta | Propósito | Complejidad |
+|-------------|-----------|-------------|
+| **SonarQube/SonarCloud** | Análisis estático de código, code smells, bugs, vulnerabilities | Media |
+| **Cypress/Playwright** | Tests E2E para flujos completos de usuario | Alta |
+| **Snyk** | Escaneo de dependencias vulnerables | Baja |
+| **Lefthook** | Git hooks para lint y tests (ya implementado) | ✅ Implementado |
+
+### SonarQube (Opcional)
+
+**¿Por qué no se implementó?**:
+- Para un test técnico, la configuración completa de SonarQube añade complejidad innecesaria
+- Los linters (RuboCop, ESLint) ya cubren la mayoría de issues de calidad
+- GitHub Actions ya ejecuta tests y lint en cada PR
+
+**¿Cuándo implementarlo?**:
+- En producción con múltiples desarrolladores
+- Cuando se necesite tracking de métricas de calidad a largo plazo
+- Para compliance o auditorías de código
+
+---
+
 ## Documentación Adicional
 
 | Documento | Descripción |

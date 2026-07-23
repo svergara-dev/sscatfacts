@@ -552,6 +552,49 @@ indent_size = 2
 trim_trailing_whitespace = false
 ```
 
+### 6.5 Hooks de Git (Lefthook)
+
+**Descripción**: Usar Lefthook para ejecutar lint y tests automáticamente antes de commits y pushes.
+
+**Instalación**:
+```bash
+# Backend
+bundle add lefthook --development
+
+# Frontend
+npm install --save-dev lefthook
+```
+
+**Archivo `lefthook.yml` (raíz del proyecto)**:
+```yaml
+pre-commit:
+  commands:
+    lint-backend:
+      glob: "*.rb"
+      run: bundle exec rubocop {staged_files}
+    lint-frontend:
+      glob: "*.{ts,tsx}"
+      run: npx eslint {staged_files}
+    format:
+      glob: "*.{ts,tsx,rb}"
+      run: npx prettier --write {staged_files}
+
+pre-push:
+  commands:
+    test-backend:
+      run: bundle exec rspec
+    test-frontend:
+      run: npm test
+    lint-all:
+      run: bundle exec rubocop && npm run lint
+```
+
+**Ventajas sobre Husky**:
+- Funciona tanto para Ruby (backend) como JS (frontend)
+- Un solo archivo de configuración para ambos
+- Más rápido que Husky
+- No depende de npm para el backend
+
 ---
 
 ## 7. Convenciones de Código
