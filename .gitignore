@@ -47,6 +47,30 @@ desktop.ini
 /ram.cache
 
 # =========================
+# Rails specific
+# =========================
+backend/tmp/
+backend/log/
+backend/config/master.key
+backend/config/credentials.yml.enc
+backend/.kamal/
+backend/config/deploy.yml
+backend/Dockerfile
+backend/.dockerignore
+backend/bin/docker-entrypoint
+backend/bin/thrust
+backend/.github/
+backend/config/bundler-audit.yml
+backend/config/ci.rb
+backend/db/cache_schema.rb
+backend/db/queue_schema.rb
+backend/config/cache.yml
+backend/config/queue.yml
+backend/config/recurring.yml
+backend/bin/jobs
+backend/.rspec
+
+# =========================
 # Node.js / React
 # =========================
 node_modules/

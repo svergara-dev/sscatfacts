@@ -1,0 +1,10 @@
+pre-commit:
+  commands:
+    lint-backend:
+      glob: "backend/**/*.rb"
+      run: cd backend && bundle exec rubocop
+
+pre-push:
+  commands:
+    test-backend:
+      run: cd backend && bundle exec rspec
