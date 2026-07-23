@@ -642,10 +642,14 @@ NODE_ENV=production
 | Código HTTP | Código de Error | Descripción |
 |-------------|-----------------|-------------|
 | 400 | `VALIDATION_ERROR` | Error de validación |
-| 401 | `UNAUTHORIZED` | No autenticado |
+| 401 | `UNAUTHORIZED` | No autenticado (token inválido/expirado) |
+| 401 | `INVALID_CREDENTIALS` | Credenciales incorrectas |
 | 403 | `FORBIDDEN` | Sin permisos |
 | 404 | `NOT_FOUND` | Recurso no encontrado |
-| 409 | `CONFLICT` | Conflicto (duplicado) |
+| 404 | `LIKE_NOT_FOUND` | Like no encontrado |
+| 404 | `FAVORITE_NOT_FOUND` | Favorito no encontrado |
+| 409 | `USER_EXISTS` | Username ya registrado |
+| 409 | `ALREADY_LIKED` | Like ya registrado |
 | 422 | `UNPROCESSABLE_ENTITY` | Error de negocio |
 | 429 | `RATE_LIMIT_EXCEEDED` | Límite de peticiones |
 | 500 | `INTERNAL_ERROR` | Error del servidor |

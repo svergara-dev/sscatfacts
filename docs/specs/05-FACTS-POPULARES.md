@@ -48,6 +48,8 @@ Esta especificación define el módulo que permite a los usuarios autenticados v
 **Criterios**:
 - Endpoint dedicado para Top N
 - Default: Top 10
+- No usa paginación — retorna directamente los N facts solicitados
+- La respuesta no incluye objeto `meta`
 
 ### RF-05-05: Interacción con Facts Populares
 
@@ -270,8 +272,9 @@ Igual que en especificación 03 - Consultar y Marcar Cat Facts
 ### HU-11: Como usuario autenticado, quiero ver qué facts son los más populares para descubrir contenido de calidad.
 
 **Alcance - Incluido:**
-- Ranking de facts por cantidad de likes con infinite scroll
-- Carga incremental al hacer scroll
+- Ranking de facts por cantidad de likes
+- Paginación tradicional (page, limit) presentada como infinite scroll en frontend
+- Carga incremental al hacer scroll (frontend carga siguientes páginas automáticamente)
 - Indicador de like del usuario actual
 - Tiempo de respuesta < 1s
 

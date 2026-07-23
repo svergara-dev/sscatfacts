@@ -17,13 +17,19 @@ Esta especificación define el módulo que permite a los usuarios autenticados c
 
 ### RF-03-01: Consultar Cat Fact Aleatorio
 
-**Descripción**: El sistema debe consumir la API externa de cat facts y presentar un fact aleatorio al usuario.
+**Descripción**: El sistema debe consumir la API externa de cat facts y presentar un fact aleatorio al usuario, incluyendo el estado de like del usuario actual y el contador total de likes.
 
 **Flujo**:
 1. Usuario hace clic en "Obtener nuevo fact"
 2. Backend consulta API externa `https://catfact.ninja/fact`
-3. Backend retorna el fact al frontend
-4. Frontend muestra el fact al usuario
+3. Backend verifica si el usuario actual ya marcó like a ese fact
+4. Backend retorna el fact con `liked` (boolean) y `likesCount` (integer)
+5. Frontend muestra el fact al usuario con corazón vacío/lleno
+
+**Criterios**:
+- Backend consulta API externa y almacena/cached el fact
+- Retorna `liked` indicando si el usuario actual dio like
+- Retorna `likesCount` con el total de likes del fact
 
 ### RF-03-02: Marcar Cat Fact como Favorito (Like)
 
@@ -332,10 +338,11 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 - Indicador de carga durante consulta
 - Manejo de errores de API externa
 - Cache de facts consultados
+- Estado de like por fact (corazón vacío/lleno)
 
 **Alcance - No incluido:**
 - Historial de facts consultados
-- Favoritos en la vista de facts
+- Lista de favoritos integrada en la vista
 - Compartir facts en redes sociales
 - Facts por categoría
 
