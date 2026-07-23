@@ -283,7 +283,7 @@ Esta especificación define los diagramas UML del sistema SSCatFacts, incluyendo
     ├───────────────────────────────┤
     │ PK id                         │
     │    username (UNIQUE, NOT NULL)│
-    │    password_hash (NOT NULL)   │
+    │    password_digest (NOT NULL)  │
     │    email (UNIQUE, NULL)       │  ← Opcional
     │    two_factor_secret (NULL)   │  ← Opcional (2FA)
     │    two_factor_enabled         │  ← Default: FALSE
