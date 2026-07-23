@@ -177,13 +177,13 @@ LIMIT $2 OFFSET $3;
         "userLiked": false,
         "rank": 2
       }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 12,
-      "totalItems": 118,
-      "itemsPerPage": 10
-    }
+    ]
+  },
+  "meta": {
+    "currentPage": 1,
+    "totalPages": 12,
+    "totalItems": 118,
+    "itemsPerPage": 10
   }
 }
 ```
@@ -276,7 +276,6 @@ Igual que en especificación 03 - Consultar y Marcar Cat Facts
 - Tiempo de respuesta < 1s
 
 **Alcance - No incluido:**
-- Ranking por período de tiempo
 - Tendencias (facts que suben rápido)
 - Recomendaciones personalizadas
 - Ranking global vs por usuario

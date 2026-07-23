@@ -135,13 +135,13 @@ LIMIT $2 OFFSET $3;
         "length": 42,
         "likedAt": "2026-07-19T15:45:00Z"
       }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 5,
-      "totalItems": 48,
-      "itemsPerPage": 10
-    }
+    ]
+  },
+  "meta": {
+    "currentPage": 1,
+    "totalPages": 5,
+    "totalItems": 48,
+    "itemsPerPage": 10
   }
 }
 ```

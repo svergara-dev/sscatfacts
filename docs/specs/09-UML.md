@@ -325,6 +325,7 @@ Esta especificación define los diagramas UML del sistema SSCatFacts, incluyendo
     │ PK id                         │
     │ FK user_id → users.id (NULL)  │  ← Puede ser NULL si usuario no existe
     │    ip_address (NOT NULL)      │
+    │    username (NULL)            │
     │    attempted_at               │
     │    success (DEFAULT: FALSE)   │
     │    user_agent (NULL)          │

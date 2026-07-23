@@ -269,13 +269,13 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
         "liked": true,
         "likesCount": 8
       }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 34,
-      "totalItems": 332,
-      "itemsPerPage": 10
-    }
+    ]
+  },
+  "meta": {
+    "currentPage": 1,
+    "totalPages": 34,
+    "totalItems": 332,
+    "itemsPerPage": 10
   }
 }
 ```

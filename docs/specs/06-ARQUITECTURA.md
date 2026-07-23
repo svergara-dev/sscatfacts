@@ -411,11 +411,14 @@ sscatfacts/
 ```json
 {
   "success": true,
-  "data": { ... },
+  "data": {
+    "...": "..."
+  },
   "meta": {
-    "page": 1,
+    "currentPage": 1,
     "totalPages": 10,
-    "totalItems": 100
+    "totalItems": 100,
+    "itemsPerPage": 10
   }
 }
 ```
@@ -1067,12 +1070,13 @@ def list
   render json: {
     success: true,
     data: {
-      facts: facts,
-      pagination: {
-        currentPage: facts.current_page,
-        totalPages: facts.total_pages,
-        totalItems: facts.total_count
-      }
+      facts: facts
+    },
+    meta: {
+      currentPage: facts.current_page,
+      totalPages: facts.total_pages,
+      totalItems: facts.total_count,
+      itemsPerPage: facts.limit_value
     }
   }
 end
