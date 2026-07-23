@@ -107,7 +107,7 @@ sscatfacts/
 - **Componentes**: PascalCase (`FactCard.tsx`)
 - **Hooks**: camelCase con prefijo `use` (`useAuth.ts`)
 - **Archivos**: kebab-case (`fact-card.tsx`)
-- **Estado**: React hooks (useState, useEffect) — NO Redux
+- **Estado**: React Context + Custom Hooks — NO Redux/Zustand
 - **HTTP**: Axios con interceptores
 - **Tests**: Jest + React Testing Library
 - **Linter**: ESLint + Prettier (sin ofensas)
@@ -126,8 +126,56 @@ sscatfacts/
 | DELETE | `/api/v1/facts/:id/like` | Sí | Quitar like |
 | GET | `/api/v1/facts/list` | Sí | Lista facts API |
 | GET | `/api/v1/users/favorites` | Sí | Facts favoritos |
+| DELETE | `/api/v1/users/favorites/:factId` | Sí | Eliminar favorito |
 | GET | `/api/v1/facts/popular` | Sí | Facts populares |
 | GET | `/api/v1/facts/top/:n` | Sí | Top N populares |
+
+---
+
+## Puertos
+
+| Puerto | Servicio | Contexto |
+|--------|----------|----------|
+| **8080** | Frontend (Docker) | `docker-compose up` |
+| **5173** | Frontend (manual) | `npm run dev` (Vite default) |
+| **3000** | Backend | Rails server |
+| **5432** | PostgreSQL | Base de datos |
+| **6379** | Redis | Cache y sesiones |
+
+---
+
+## Formato de Respuesta
+
+**Éxito (2xx)**:
+```json
+{ "success": true, "data": {...}, "meta": {...} }
+```
+
+**Error (4xx/5xx)**:
+```json
+{ "success": false, "error": { "code": "ERROR_CODE", "message": "...", "details": [] } }
+```
+
+**Códigos de error**: Ver tabla completa en `06-ARQUITECTURA.md` (13 códigos definidos).
+
+---
+
+## Rate Limiting
+
+| Endpoint | Límite | Herramienta |
+|----------|--------|-------------|
+| POST `/api/v1/auth/register` | 3 intentos/hora por IP | `rack-attack` |
+| POST `/api/v1/auth/login` | 5 intentos/minuto por IP | `rack-attack` |
+| Endpoints generales | 100 requests/minuto por IP | `rack-attack` |
+
+---
+
+## JWT
+
+- **Algoritmo**: HS256
+- **Expiración**: 24 horas
+- **Header**: `Authorization: Bearer <token>`
+- **Payload**: `{ userId, username, iat, exp }`
 
 ---
 
@@ -148,7 +196,8 @@ sscatfacts/
 | `users` | Usuarios con username único |
 | `cat_facts` | Facts cacheados de la API externa |
 | `user_likes` | Relación usuario-fact (like) |
-| `two_factors` | Datos 2FA (TOTP secret) |
+| `login_attempts` | Auditoría de intentos de login (opcional) |
+| `two_factor_codes` | Códigos 2FA usados (auditoría, opcional) |
 
 ---
 

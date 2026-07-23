@@ -21,6 +21,19 @@ Cada entrada debe seguir este formato:
 
 ## Registro de Correcciones
 
+### 2026-07-23 — Corrección: 3 rondas de consistencia cross-spec (13 specs)
+
+**Contexto**: Se realizó auditoría completa de consistencia entre las 12 specs (01-05 funcionales, 06-09 no funcionales, README, SETUP) y DESAFIO_TECNICO.
+**Corrección**: Se corrigieron 15+ inconsistencias en 3 rondas:
+- **Ronda 1** (commits c26a546→2763f46): Endpoints, tablas, puertos, Redux→Context, formatos de respuesta
+- **Ronda 2** (commit dfd86c8): HU-02 contradicción, README Redux→Context, Docker :8080, HU-12 period filter, paginación
+- **Ronda 3** (commit 9c3a561): Tabla de errores completa (13 códigos), liked/likesCount en RF-03-01, Top N sin paginación, infinite scroll clarificado, password validation en modelo
+- **AGENTS.md** (commit pendiente): DELETE favoritos, tabla two_factor_codes, puertos, formato respuesta, rate limiting, JWT
+**Razón**: Las specs eran el contrato de implementación. Inconsistencias causarían bugs y retrabajo durante el desarrollo.
+**Archivos**: Todas las specs en `docs/specs/`, `AGENTS.md`
+
+---
+
 ### 2026-07-22 — Corrección: Archivo SET UP.md duplicado con espacio
 
 **Contexto**: Se creó un archivo `SET UP.md` (con espacio) que era un duplicado corrupto de `SETUP.md`.
@@ -137,6 +150,19 @@ Cada entrada debe seguir este formato:
 
 ## Aprendizajes
 
+### 2026-07-23 — Consistencia cross-spec es crítica antes de codificar
+
+**Aprendizaje**: Antes de empezar a codificar, se debe hacer una auditoría completa de consistencia entre TODAS las specs. Las inconsistencias más comunes son:
+- Nombres de tablas/campos diferentes entre specs
+- Códigos de error no definidos en la tabla maestra (06-ARQUITECTURA)
+- Formatos de respuesta diferentes entre endpoints
+- Endpoints faltantes en la tabla consolidada
+- Contradicciones entre HU "No incluido" y los RF
+
+**Solución**: Tener 06-ARQUITECTURA.md como fuente de verdad para endpoints, tablas, errores y formatos. Todas las specs individuales deben referenciarla.
+
+---
+
 ### 2026-07-22 — API catfact.ninja limitada
 
 **Aprendizaje**: La API catfact.ninja solo tiene 2 endpoints funcionales:
@@ -158,12 +184,26 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 
 ---
 
+### 2026-07-23 — AGENTS.md debe alinearse con specs
+
+**Aprendizaje**: AGENTS.md es el punto de entrada para AI assistants. Debe reflejar exactamente lo que dicen las specs:
+- Endpoints correctos (incluyendo DELETE favoritos)
+- Nombres de tablas correctos (`two_factor_codes`, no `two_factors`)
+- Formato de respuesta estándar
+- Rate limiting detallado
+- JWT config (HS256, 24h)
+- Puertos (8080 Docker, 5173 manual)
+- State management: React Context + Custom Hooks (NO Redux/Zustand)
+
+---
+
 ## Estado del Desarrollo
 
 | Fase | Estado | Notas |
 |------|--------|-------|
-| Especificaciones | ✅ Completado | 100% cubierto |
-| AGENTS.md | ✅ Completado | Contexto para AI assistants |
+| Especificaciones | ✅ Completado | 100% cubierto, 3 rondas de consistencia |
+| Consistencia cross-spec | ✅ Completado | 15+ inconsistencias corregidas |
+| AGENTS.md | ✅ Completado | Actualizado con endpoints, puertos, JWT, rate limiting |
 | MEMORY.md | ✅ Completado | Este archivo |
 | Setup Backend | ⏳ Pendiente | Ruby on Rails API |
 | Setup Frontend | ⏳ Pendiente | React + TypeScript |
@@ -182,15 +222,20 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 3. **No saltar eager loading** — Siempre usar `.includes()` para evitar N+1
 4. **No hardcodear secretos** — Usar variables de entorno
 5. **No mezclar funcionalidades** — Un commit = una tarea
-6. **No usar Redux** — Usar React hooks para estado
+6. **No usar Redux** — Usar React Context + Custom Hooks
 7. **No usar Repository Pattern** — ActiveRecord ya provee abstracción
+8. **No usar `password_hash`** — Usar `password_digest` (bcrypt via `has_secure_password`)
+9. **No olvidar `meta` fuera de `data`** — Formato de paginación: `{ success, data: { facts: [...] }, meta: { currentPage, ... } }`
+10. **No documentar endpoints inexistentes** — API externa solo tiene `/fact` y `/facts`
 
 ---
 
 ## Próximos Pasos
 
-1. Inicializar backend con `rails new --api`
-2. Configurar PostgreSQL y Redis
-3. Implementar `01-REGISTRO-USUARIOS.md`
-4. Seguir el orden de las specs
-5. Actualizar este archivo con cada corrección
+1. ~~Auditar consistencia cross-spec~~ ✅ Completado (3 rondas, 15+ correcciones)
+2. Crear rama `feature/01-registro-usuarios` desde `develop`
+3. Inicializar backend con `rails new --api`
+4. Configurar PostgreSQL y Redis
+5. Implementar `01-REGISTRO-USUARIOS.md`
+6. Seguir el orden de las specs (01 → 02 → 03 → ...)
+7. Actualizar este archivo con cada corrección
