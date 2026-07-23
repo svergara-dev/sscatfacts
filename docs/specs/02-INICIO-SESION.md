@@ -102,7 +102,10 @@ Esta especificación define el módulo de autenticación que permite a los usuar
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    password_digest VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    two_factor_secret VARCHAR(255),
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -113,10 +116,12 @@ CREATE TABLE users (
 ```sql
 CREATE TABLE login_attempts (
     id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
     ip_address VARCHAR(45) NOT NULL,
     username VARCHAR(30),
     attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    success BOOLEAN DEFAULT FALSE
+    success BOOLEAN DEFAULT FALSE,
+    user_agent VARCHAR(255)
 );
 
 CREATE INDEX idx_login_attempts_ip ON login_attempts(ip_address, attempted_at);
@@ -126,7 +131,7 @@ CREATE INDEX idx_login_attempts_ip ON login_attempts(ip_address, attempted_at);
 
 ## API Contract
 
-### POST `/api/auth/login`
+### POST `/api/v1/auth/login`
 
 **Request Body**:
 ```json

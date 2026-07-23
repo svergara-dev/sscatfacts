@@ -141,7 +141,7 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ## API Contract
 
-### GET `/api/facts/random`
+### GET `/api/v1/facts/random`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -183,7 +183,7 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ---
 
-### POST `/api/facts/:id/like`
+### POST `/api/v1/facts/:id/like`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -211,7 +211,7 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ---
 
-### DELETE `/api/facts/:id/like`
+### DELETE `/api/v1/facts/:id/like`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -239,7 +239,7 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ---
 
-### GET `/api/facts/list`
+### GET `/api/v1/facts/list`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -391,7 +391,6 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 - Búsqueda de facts
 - Filtros por categoría
 - Ordenamiento personalizado
-- Infinite scroll
 
 **Given** que el usuario accede a la sección de facts
 **When** se carga la página
@@ -403,7 +402,7 @@ CREATE INDEX idx_user_likes_fact ON user_likes(fact_id);
 
 ```
 User -> Frontend: Clic "Nuevo Fact"
-Frontend -> Backend: GET /api/facts/random
+Frontend -> Backend: GET /api/v1/facts/random
 Backend -> API Externa: GET https://catfact.ninja/fact
 API Externa --> Backend: { fact: "..." }
 Backend -> BD: Guardar/Obtener fact
@@ -411,13 +410,13 @@ Backend --> Frontend: { fact, liked: false, likesCount }
 Frontend --> User: Mostrar fact con corazón vacío
 
 User -> Frontend: Clic corazón (like)
-Frontend -> Backend: POST /api/facts/:id/like
+Frontend -> Backend: POST /api/v1/facts/:id/like
 Backend -> BD: INSERT INTO user_likes
 Backend --> Frontend: { liked: true, likesCount: 43 }
 Frontend --> User: Corazón lleno, contador actualizado
 
 User -> Frontend: Accede a "Lista de Facts"
-Frontend -> Backend: GET /api/facts/list?page=1&limit=10
+Frontend -> Backend: GET /api/v1/facts/list?page=1&limit=10
 Backend -> API Externa: GET https://catfact.ninja/facts?page=1
 API Externa --> Backend: { data: [...], total: 332 }
 Backend -> BD: Verificar likes del usuario

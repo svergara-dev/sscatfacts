@@ -109,7 +109,7 @@ LIMIT $2 OFFSET $3;
 
 ## API Contract
 
-### GET `/api/users/favorites`
+### GET `/api/v1/users/favorites`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -159,7 +159,7 @@ LIMIT $2 OFFSET $3;
 
 ---
 
-### DELETE `/api/users/favorites/:factId`
+### DELETE `/api/v1/users/favorites/:factId`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 

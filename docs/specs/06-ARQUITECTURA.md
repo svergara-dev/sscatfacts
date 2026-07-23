@@ -544,7 +544,7 @@ NODE_ENV=production
 | GET | `/api/v1/facts/random` | Fact aleatorio | Sí |
 | GET | `/api/v1/facts/list` | Lista paginada | Sí |
 | POST | `/api/v1/facts/:id/like` | Dar like | Sí |
-| DELETE | `/api/vacts/:id/like` | Quitar like | Sí |
+| DELETE | `/api/v1/facts/:id/like` | Quitar like | Sí |
 | GET | `/api/v1/facts/popular` | Facts populares | Sí |
 | GET | `/api/v1/facts/top/:n` | Top N facts | Sí |
 

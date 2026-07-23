@@ -146,7 +146,7 @@ LIMIT $2 OFFSET $3;
 
 ## API Contract
 
-### GET `/api/facts/popular`
+### GET `/api/v1/facts/popular`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -201,7 +201,7 @@ LIMIT $2 OFFSET $3;
 
 ---
 
-### GET `/api/facts/top/:n`
+### GET `/api/v1/facts/top/:n`
 
 **Headers**: `Authorization: Bearer <jwt_token>`
 
@@ -229,11 +229,11 @@ LIMIT $2 OFFSET $3;
 
 ---
 
-### POST `/api/facts/:id/like`
+### POST `/api/v1/facts/:id/like`
 
 Igual que en especificación 03 - Consultar y Marcar Cat Facts
 
-### DELETE `/api/facts/:id/like`
+### DELETE `/api/v1/facts/:id/like`
 
 Igual que en especificación 03 - Consultar y Marcar Cat Facts
 

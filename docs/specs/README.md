@@ -275,7 +275,7 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 ├─────────────────┤       ├─────────────────┤       ├─────────────────┤
 │ id (PK)         │       │ id (PK)         │       │ id (PK)         │
 │ username (UNIQUE)│       │ fact_text       │       │ user_id (FK)    │
-│ password_hash   │       │ length          │       │ fact_id (FK)    │
+│ password_digest   │       │ length          │       │ fact_id (FK)    │
 │ created_at      │       │ api_fact_id     │       │ created_at      │
 │ updated_at      │       │ created_at      │       └─────────────────┘
 └─────────────────┘       └─────────────────┘
@@ -300,26 +300,26 @@ Este directorio contiene las especificaciones detalladas para cada requerimiento
 
 | Método | Endpoint | Descripción | Autenticación |
 |--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Registrar nuevo usuario | No |
-| POST | `/api/auth/login` | Iniciar sesión | No |
+| POST | `/api/v1/auth/register` | Registrar nuevo usuario | No |
+| POST | `/api/v1/auth/login` | Iniciar sesión | No |
 
 ### Cat Facts
 
 | Método | Endpoint | Descripción | Autenticación |
 |--------|----------|-------------|---------------|
-| GET | `/api/facts/random` | Obtener fact aleatorio | Sí |
-| GET | `/api/facts/list` | Listar facts paginados | Sí |
-| POST | `/api/facts/:id/like` | Dar like a fact | Sí |
-| DELETE | `/api/facts/:id/like` | Quitar like | Sí |
-| GET | `/api/facts/popular` | Facts más populares | Sí |
-| GET | `/api/facts/top/:n` | Top N facts | Sí |
+| GET | `/api/v1/facts/random` | Obtener fact aleatorio | Sí |
+| GET | `/api/v1/facts/list` | Listar facts paginados | Sí |
+| POST | `/api/v1/facts/:id/like` | Dar like a fact | Sí |
+| DELETE | `/api/v1/facts/:id/like` | Quitar like | Sí |
+| GET | `/api/v1/facts/popular` | Facts más populares | Sí |
+| GET | `/api/v1/facts/top/:n` | Top N facts | Sí |
 
 ### Usuario
 
 | Método | Endpoint | Descripción | Autenticación |
 |--------|----------|-------------|---------------|
-| GET | `/api/users/favorites` | Lista de favoritos | Sí |
-| DELETE | `/api/users/favorites/:factId` | Eliminar de favoritos | Sí |
+| GET | `/api/v1/users/favorites` | Lista de favoritos | Sí |
+| DELETE | `/api/v1/users/favorites/:factId` | Eliminar de favoritos | Sí |
 
 ---
 
