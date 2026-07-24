@@ -61,6 +61,9 @@ jobs:
           ruby-version: '4.0'
           bundler-cache: true
 
+      - name: Install dependencies
+        run: bundle install
+
       - name: Set up database
         run: bundle exec rails db:create db:schema:load
 
