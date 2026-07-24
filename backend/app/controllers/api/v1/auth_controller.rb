@@ -12,13 +12,14 @@ module Api
         if result.success?
           render json: {
             success: true,
-            data: result.data
+            data: UserSerializer.new(result.user).as_json
           }, status: :created
         else
-          render json: {
-            success: false,
-            error: result.error
-          }, status: error_status(result.error[:code])
+          render json: ErrorSerializer.new(
+            code: result.error[:code],
+            message: result.error[:message],
+            details: result.error[:details]
+          ).as_json, status: error_status(result.error[:code])
         end
       end
 

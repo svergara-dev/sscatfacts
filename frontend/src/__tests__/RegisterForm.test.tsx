@@ -34,7 +34,9 @@ describe('RegisterForm', () => {
   it('shows error for short username', async () => {
     renderWithProviders(<RegisterForm />);
 
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { name: 'username', value: 'ab' } });
+    fireEvent.change(screen.getByLabelText(/username/i), {
+      target: { name: 'username', value: 'ab' },
+    });
     fireEvent.change(screen.getByLabelText(/^contraseña$/i), {
       target: { name: 'password', value: 'password123' },
     });

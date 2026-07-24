@@ -18,24 +18,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
 
-  const register = useCallback(async (username: string, password: string, confirmPassword: string) => {
-    setIsLoading(true);
-    setError(null);
+  const register = useCallback(
+    async (username: string, password: string, confirmPassword: string) => {
+      setIsLoading(true);
+      setError(null);
 
-    const response = await registerApi({ username, password, confirmPassword });
+      const response = await registerApi({ username, password, confirmPassword });
 
-    setIsLoading(false);
+      setIsLoading(false);
 
-    if (response.success && response.data) {
-      setUser(response.data);
-      return true;
-    }
+      if (response.success && response.data) {
+        setUser(response.data);
+        return true;
+      }
 
-    if (response.error) {
-      setError(response.error);
-    }
-    return false;
-  }, []);
+      if (response.error) {
+        setError(response.error);
+      }
+      return false;
+    },
+    [],
+  );
 
   const clearError = useCallback(() => {
     setError(null);

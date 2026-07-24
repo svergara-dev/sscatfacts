@@ -13,20 +13,19 @@ RSpec.describe Auth::RegisterUser do
         )
 
         expect(result.success?).to be true
-        expect(result.data[:id]).to be_present
-        expect(result.data[:username]).to eq("catlover123")
-        expect(result.data[:createdAt]).to be_present
+        expect(result.user).to be_a(User)
+        expect(result.user.username).to eq("catlover123")
       end
 
-      it "does not return password in data" do
+      it "returns a user object" do
         result = use_case.execute(
           username: "catlover123",
           password: "password123",
           password_confirmation: "password123"
         )
 
-        expect(result.data).not_to have_key(:password)
-        expect(result.data).not_to have_key(:password_digest)
+        expect(result.user).to be_a(User)
+        expect(result.user.password_digest).to be_present
       end
     end
 

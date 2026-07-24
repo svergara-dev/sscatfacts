@@ -1,6 +1,6 @@
 module Auth
   class RegisterUser
-    Result = Struct.new(:success?, :data, :error, keyword_init: true)
+    Result = Struct.new(:success?, :user, :error, keyword_init: true)
 
     def initialize(auth_service: AuthService.new)
       @auth_service = auth_service
@@ -24,14 +24,7 @@ module Auth
       result = @auth_service.create_user(username: username, password: password)
 
       if result[:success]
-        Result.new(
-          success?: true,
-          data: {
-            id: result[:user].id,
-            username: result[:user].username,
-            createdAt: result[:user].created_at.iso8601
-          }
-        )
+        Result.new(success?: true, user: result[:user])
       else
         Result.new(
           success?: false,
