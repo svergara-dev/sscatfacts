@@ -3,8 +3,13 @@ pre-commit:
     lint-backend:
       glob: "backend/**/*.rb"
       run: cd backend && bundle exec rubocop
+    lint-frontend:
+      glob: "frontend/**/*.{ts,tsx}"
+      run: cd frontend && npx eslint src
 
 pre-push:
   commands:
     test-backend:
       run: cd backend && bundle exec rspec
+    test-frontend:
+      run: cd frontend && npx vitest run
