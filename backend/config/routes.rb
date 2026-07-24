@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       get "facts/list", to: "facts#list"
       post "facts/:id/like", to: "facts#like"
       delete "facts/:id/like", to: "facts#unlike"
+
+      get "users/favorites", to: "users#favorites"
+      delete "users/favorites/:factId", to: "users#remove_favorite"
     end
   end
 
