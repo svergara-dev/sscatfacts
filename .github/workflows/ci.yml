@@ -7,6 +7,7 @@ on:
 jobs:
   backend:
     uses: ./.github/workflows/backend.yml
+    secrets: inherit
 
   frontend:
     uses: ./.github/workflows/frontend.yml
