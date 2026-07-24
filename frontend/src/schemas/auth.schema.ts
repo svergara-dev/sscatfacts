@@ -16,3 +16,10 @@ export const registerSchema = z
   });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  username: z.string().min(3, 'Mínimo 3 caracteres').max(30, 'Máximo 30 caracteres'),
+  password: z.string().min(8, 'Mínimo 8 caracteres'),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;
