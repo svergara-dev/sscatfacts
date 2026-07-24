@@ -250,7 +250,7 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 | CI/CD | ✅ Completado | GitHub Actions con workflows reutilizables (ci.yml, backend.yml, frontend.yml) |
 | Spec 02 - Login | ✅ Completado | JwtService, LoginUser, AuthController#login/#me, authenticate_request, LoginForm, LoginPage, ProtectedRoute, session persistence, 57 tests |
 | Spec 03 - Facts | ✅ Completado | CatFactApiService (Faraday, retry, cache), FactService, 4 use cases, FactsController, FactSerializer, FactCard, FactsPage, useFacts, useLike (optimistic updates), 136 backend + 80 frontend tests |
-| Spec 04 - Favoritos | ⏳ Pendiente | |
+| Spec 04 - Favoritos | ✅ Completado | GetUserFavorites, RemoveFavorite, UsersController, FavoritesPage, useFavorites, 14 backend + 12 frontend tests |
 | Spec 05 - Populares | ⏳ Pendiente | |
 | Docker | ⏳ Pendiente | docker-compose.yml |
 | Deploy | ⏳ Pendiente | AWS |
@@ -282,4 +282,5 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 5. ~~Implementar `01-REGISTRO-USUARIOS.md`~~ ✅ Completado
 6. ~~Implementar `02-INICIO-SESION.md` (Login + JWT)~~ ✅ Completado
 7. ~~Implementar `03-CONSULTAR-MARCAR-FACTS.md` (Cat Facts + Likes)~~ ✅ Completado
-8. Actualizar este archivo con cada corrección
+8. ~~Implementar `04-LISTA-FACTS-GUSTADOS.md` (Favoritos)~~ ✅ Completado
+9. Actualizar este archivo con cada corrección
