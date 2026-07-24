@@ -4,6 +4,8 @@
 
 Esta especificación define el módulo que permite a los usuarios autenticados consultar cat facts desde la API externa y marcar los que les gustan para guardarlos en su perfil.
 
+> **Estado**: ✅ COMPLETADO
+
 ## Contexto del Negocio
 
 - **Módulo**: Cat Facts - Consulta y Likes
