@@ -13,5 +13,15 @@ module Auth
     def username_exists?(username)
       User.exists?(username: username)
     end
+
+    def authenticate_user(username:, password:)
+      user = User.find_by(username: username)
+
+      if user&.authenticate(password)
+        { success: true, user: user }
+      else
+        { success: false }
+      end
+    end
   end
 end

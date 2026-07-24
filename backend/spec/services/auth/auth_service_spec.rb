@@ -77,4 +77,36 @@ RSpec.describe Auth::AuthService do
       expect(service.username_exists?("nonexistent")).to be false
     end
   end
+
+  describe "#authenticate_user" do
+    context "with valid credentials" do
+      before { create(:user, username: "catlover123", password: "password123") }
+
+      it "returns success with user" do
+        result = service.authenticate_user(username: "catlover123", password: "password123")
+
+        expect(result[:success]).to be true
+        expect(result[:user]).to be_a(User)
+        expect(result[:user].username).to eq("catlover123")
+      end
+    end
+
+    context "with wrong password" do
+      before { create(:user, username: "catlover123", password: "password123") }
+
+      it "returns failure" do
+        result = service.authenticate_user(username: "catlover123", password: "wrongpassword")
+
+        expect(result[:success]).to be false
+      end
+    end
+
+    context "with non-existent username" do
+      it "returns failure" do
+        result = service.authenticate_user(username: "nonexistent", password: "password123")
+
+        expect(result[:success]).to be false
+      end
+    end
+  end
 end

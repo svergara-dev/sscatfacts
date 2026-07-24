@@ -2,6 +2,10 @@ Rack::Attack.throttle("registration attempts by ip", limit: 3, period: 1.hour) d
   req.ip if req.path == "/api/v1/auth/register" && req.post?
 end
 
+Rack::Attack.throttle("login attempts by ip", limit: 5, period: 1.minute) do |req|
+  req.ip if req.path == "/api/v1/auth/login" && req.post?
+end
+
 Rack::Attack.throttle("general requests by ip", limit: 100, period: 1.minute) do |req|
   req.ip unless req.path.start_with?("/up")
 end
