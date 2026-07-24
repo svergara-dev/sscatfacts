@@ -21,6 +21,18 @@ Cada entrada debe seguir este formato:
 
 ## Registro de Correcciones
 
+### 2026-07-24 — Completado: Spec 01 - Registro de Usuarios + CI/CD
+
+**Contexto**: Implementación completa del módulo de registro y configuración de CI/CD.
+**Completado**:
+- Backend: User model, AuthService, RegisterUser use case, AuthController, Serializers, ErrorHandler, Rate Limiting, SimpleCov (92% lines)
+- Frontend: Atomic Design (atoms → pages), AuthContext, RegisterForm, Zod validation, Vitest (98% lines)
+- CI/CD: GitHub Actions con workflows reutilizables (ci.yml → backend.yml + frontend.yml), secrets para PostgreSQL
+- Tests: 33 backend specs + 30 frontend tests
+**Archivos**: `backend/`, `frontend/`, `.github/workflows/`, `docs/specs/01-REGISTRO-USUARIOS.md`
+
+---
+
 ### 2026-07-23 — Corrección: 3 rondas de consistencia cross-spec (13 specs)
 
 **Contexto**: Se realizó auditoría completa de consistencia entre las 12 specs (01-05 funcionales, 06-09 no funcionales, README, SETUP) y DESAFIO_TECNICO.
@@ -205,12 +217,15 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 | Consistencia cross-spec | ✅ Completado | 15+ inconsistencias corregidas |
 | AGENTS.md | ✅ Completado | Actualizado con endpoints, puertos, JWT, rate limiting |
 | MEMORY.md | ✅ Completado | Este archivo |
-| Setup Backend | ⏳ Pendiente | Ruby on Rails API |
-| Setup Frontend | ⏳ Pendiente | React + TypeScript |
-| Funcionalidades | ⏳ Pendiente | RF-01 a RF-05 |
-| Tests | ⏳ Pendiente | Unit + Integration |
+| Setup Backend | ✅ Completado | Rails 8.1 API + PostgreSQL + bcrypt + rack-attack + RSpec + SimpleCov |
+| Setup Frontend | ✅ Completado | React 19 + TypeScript + Vite 8 + Tailwind CSS v4 + ESLint v10 + Vitest |
+| Spec 01 - Registro | ✅ Completado | Model, Service, UseCase, Controller, Serializers, ErrorHandler, Rate Limiting, Atomic Design, 30 tests (98% coverage) |
+| CI/CD | ✅ Completado | GitHub Actions con workflows reutilizables (ci.yml, backend.yml, frontend.yml) |
+| Spec 02 - Login | ⏳ Pendiente | |
+| Spec 03 - Facts | ⏳ Pendiente | |
+| Spec 04 - Favoritos | ⏳ Pendiente | |
+| Spec 05 - Populares | ⏳ Pendiente | |
 | Docker | ⏳ Pendiente | docker-compose.yml |
-| CI/CD | ⏳ Pendiente | GitHub Actions |
 | Deploy | ⏳ Pendiente | AWS |
 
 ---
@@ -233,9 +248,10 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 ## Próximos Pasos
 
 1. ~~Auditar consistencia cross-spec~~ ✅ Completado (3 rondas, 15+ correcciones)
-2. Crear rama `feature/01-registro-usuarios` desde `develop`
-3. Inicializar backend con `rails new --api`
-4. Configurar PostgreSQL y Redis
-5. Implementar `01-REGISTRO-USUARIOS.md`
-6. Seguir el orden de las specs (01 → 02 → 03 → ...)
-7. Actualizar este archivo con cada corrección
+2. ~~Crear rama `feature/01-registro-usuarios` desde `develop`~~ ✅ Completado
+3. ~~Inicializar backend con `rails new --api`~~ ✅ Completado
+4. ~~Configurar PostgreSQL y Redis~~ ✅ Completado
+5. ~~Implementar `01-REGISTRO-USUARIOS.md`~~ ✅ Completado
+6. Implementar `02-INICIO-SESION.md` (Login + JWT)
+7. Seguir el orden de las specs (02 → 03 → ...)
+8. Actualizar este archivo con cada corrección
