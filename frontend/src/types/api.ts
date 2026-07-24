@@ -31,3 +31,32 @@ export interface LoginResponse {
   token: string;
   user: UserData;
 }
+
+export interface FactData {
+  id: number;
+  fact: string;
+  length: number;
+  liked: boolean;
+  likesCount: number;
+}
+
+export interface FactLikeResponse {
+  liked: boolean;
+  likesCount: number;
+}
+
+export interface PaginationMeta {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+}
+
+export interface PaginatedFactsResponse {
+  facts: FactData[];
+}
+
+export interface ListFactsParams {
+  page?: number;
+  limit?: number;
+}

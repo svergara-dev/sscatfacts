@@ -19,6 +19,33 @@ Cada entrada debe seguir este formato:
 
 ---
 
+### 2026-07-24 — Corrección: Faraday namespace en módulo External
+
+**Contexto**: Al llamar a la API externa catfact.ninja, se producía `NameError: uninitialized constant External::CatFactApiService::Faraday`.
+**Corrección**: Agregar `require "faraday"` al inicio del archivo y usar `::Faraday` (prefijo global) en todas las referencias dentro del módulo `External`.
+**Razón**: Ruby resuelve constantes primero en el namespace actual. Al estar dentro de `module External`, buscaba `External::Faraday` antes de `::Faraday`.
+**Archivos**: `backend/app/services/external/cat_fact_api_service.rb`
+
+---
+
+### 2026-07-24 — Corrección: Mismatch de claves símbolo vs string
+
+**Contexto**: `CatFactApiService#fetch_random` retorna claves de símbolo (`:fact`), pero `FactService#find_or_create_fact` buscaba con claves de string (`"fact"`), causando `TypeError: no implicit conversion of nil into String`.
+**Corrección**: `find_or_create_fact` ahora acepta ambos formatos: `external_fact[:fact] || external_fact["fact"]`.
+**Razón**: Los hashes de Ruby con claves de símbolo y string son diferentes. El servicio retornaba símbolos pero el consumidor esperaba strings.
+**Archivos**: `backend/app/services/fact_service.rb`
+
+---
+
+### 2026-07-24 — Decisión: Sin caché para fact aleatorio
+
+**Contexto**: El endpoint `/facts/random` usaba caché por minuto, causando que clicks rápidos retornaran el mismo fact.
+**Decisión**: Eliminar caché de `fetch_random`, mantener caché en `fetch_list`.
+**Razón**: El usuario hace clic en "Nuevo Fact" explícitamente para obtener un fact nuevo. El caché contrarresta esa intención. El listado sí se beneficia del caché para paginación estable.
+**Archivos**: `backend/app/services/external/cat_fact_api_service.rb`
+
+---
+
 ## Registro de Correcciones
 
 ### 2026-07-24 — Completado: Spec 01 - Registro de Usuarios + CI/CD
@@ -222,7 +249,7 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 | Spec 01 - Registro | ✅ Completado | Model, Service, UseCase, Controller, Serializers, ErrorHandler, Rate Limiting, Atomic Design, 30 tests (98% coverage) |
 | CI/CD | ✅ Completado | GitHub Actions con workflows reutilizables (ci.yml, backend.yml, frontend.yml) |
 | Spec 02 - Login | ✅ Completado | JwtService, LoginUser, AuthController#login/#me, authenticate_request, LoginForm, LoginPage, ProtectedRoute, session persistence, 57 tests |
-| Spec 03 - Facts | ⏳ Pendiente | |
+| Spec 03 - Facts | ✅ Completado | CatFactApiService (Faraday, retry, cache), FactService, 4 use cases, FactsController, FactSerializer, FactCard, FactsPage, useFacts, useLike (optimistic updates), 136 backend + 80 frontend tests |
 | Spec 04 - Favoritos | ⏳ Pendiente | |
 | Spec 05 - Populares | ⏳ Pendiente | |
 | Docker | ⏳ Pendiente | docker-compose.yml |
@@ -254,5 +281,5 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 4. ~~Configurar PostgreSQL y Redis~~ ✅ Completado
 5. ~~Implementar `01-REGISTRO-USUARIOS.md`~~ ✅ Completado
 6. ~~Implementar `02-INICIO-SESION.md` (Login + JWT)~~ ✅ Completado
-7. Seguir el orden de las specs (02 → 03 → ...)
+7. ~~Implementar `03-CONSULTAR-MARCAR-FACTS.md` (Cat Facts + Likes)~~ ✅ Completado
 8. Actualizar este archivo con cada corrección

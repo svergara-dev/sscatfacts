@@ -4,6 +4,11 @@ Rails.application.routes.draw do
       post "auth/register", to: "auth#register"
       post "auth/login", to: "auth#login"
       get "auth/me", to: "auth#me"
+
+      get "facts/random", to: "facts#random"
+      get "facts/list", to: "facts#list"
+      post "facts/:id/like", to: "facts#like"
+      delete "facts/:id/like", to: "facts#unlike"
     end
   end
 

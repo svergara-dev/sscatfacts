@@ -4,6 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { FactsPage } from '@/pages/FactsPage';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <div className="text-2xl font-bold p-8">SSCatFacts</div>
+                  <FactsPage />
                 </ProtectedRoute>
               }
             />
