@@ -4,6 +4,8 @@
 
 Esta especificación define el módulo que permite a los usuarios autenticados visualizar todos los cat facts que han marcado como favoritos (con like) en la plataforma.
 
+> **Estado**: ✅ COMPLETADO
+
 ## Contexto del Negocio
 
 - **Módulo**: Cat Facts - Historial de Favoritos

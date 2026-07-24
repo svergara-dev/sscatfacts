@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useFacts } from '@/hooks/useFacts';
 import { useLike } from '@/hooks/useLike';
@@ -7,6 +8,7 @@ import { Button } from '@/atoms/Button/Button';
 
 export function FactsPage() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const { fact, isLoading, error, fetchRandom, updateFactLike } = useFacts();
   const { isLoading: isLikeLoading, toggleLike } = useLike();
 
@@ -29,6 +31,12 @@ export function FactsPage() {
           <h1 className="text-xl font-bold text-gray-800">SSCatFacts</h1>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">{user?.username}</span>
+            <button
+              onClick={() => navigate('/favorites')}
+              className="text-sm text-blue-500 hover:text-blue-700"
+            >
+              Favoritos
+            </button>
             <button onClick={logout} className="text-sm text-gray-500 hover:text-gray-700">
               Cerrar sesion
             </button>

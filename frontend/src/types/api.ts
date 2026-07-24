@@ -60,3 +60,15 @@ export interface ListFactsParams {
   page?: number;
   limit?: number;
 }
+
+export interface FavoriteFactData {
+  id: number;
+  fact: string;
+  length: number;
+  likedAt: string;
+}
+
+export interface GetFavoritesParams {
+  page?: number;
+  limit?: number;
+}

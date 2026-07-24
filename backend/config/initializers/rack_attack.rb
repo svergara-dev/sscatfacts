@@ -14,6 +14,10 @@ Rack::Attack.throttle("facts like by ip", limit: 60, period: 1.minute) do |req|
   req.ip if req.path.match?(%r{/api/v1/facts/\d+/like}) && req.post?
 end
 
+Rack::Attack.throttle("users favorites by ip", limit: 60, period: 1.minute) do |req|
+  req.ip if req.path == "/api/v1/users/favorites" && req.get?
+end
+
 Rack::Attack.throttle("general requests by ip", limit: 100, period: 1.minute) do |req|
   req.ip unless req.path.start_with?("/up")
 end
