@@ -221,7 +221,7 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 | Setup Frontend | ✅ Completado | React 19 + TypeScript + Vite 8 + Tailwind CSS v4 + ESLint v10 + Vitest |
 | Spec 01 - Registro | ✅ Completado | Model, Service, UseCase, Controller, Serializers, ErrorHandler, Rate Limiting, Atomic Design, 30 tests (98% coverage) |
 | CI/CD | ✅ Completado | GitHub Actions con workflows reutilizables (ci.yml, backend.yml, frontend.yml) |
-| Spec 02 - Login | ⏳ Pendiente | |
+| Spec 02 - Login | ✅ Completado | JwtService, LoginUser, AuthController#login/#me, authenticate_request, LoginForm, LoginPage, ProtectedRoute, session persistence, 57 tests |
 | Spec 03 - Facts | ⏳ Pendiente | |
 | Spec 04 - Favoritos | ⏳ Pendiente | |
 | Spec 05 - Populares | ⏳ Pendiente | |
@@ -242,6 +242,7 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 8. **No usar `password_hash`** — Usar `password_digest` (bcrypt via `has_secure_password`)
 9. **No olvidar `meta` fuera de `data`** — Formato de paginación: `{ success, data: { facts: [...] }, meta: { currentPage, ... } }`
 10. **No documentar endpoints inexistentes** — API externa solo tiene `/fact` y `/facts`
+11. **404 Page pendiente** — Rutas inexistentes no manejan pantalla de "Página no encontrada". Pendiente de implementar en spec futura o como mejora menor.
 
 ---
 
@@ -252,6 +253,6 @@ Total: 175 pts. Las specs deben cubrir el 100% + extras.
 3. ~~Inicializar backend con `rails new --api`~~ ✅ Completado
 4. ~~Configurar PostgreSQL y Redis~~ ✅ Completado
 5. ~~Implementar `01-REGISTRO-USUARIOS.md`~~ ✅ Completado
-6. Implementar `02-INICIO-SESION.md` (Login + JWT)
+6. ~~Implementar `02-INICIO-SESION.md` (Login + JWT)~~ ✅ Completado
 7. Seguir el orden de las specs (02 → 03 → ...)
 8. Actualizar este archivo con cada corrección
