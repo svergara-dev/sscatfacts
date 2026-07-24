@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { loginSchema, type LoginFormData } from '@/schemas/auth.schema';
 import { Button } from '@/atoms/Button/Button';
@@ -8,6 +8,7 @@ import { FormField } from '@/molecules/FormField/FormField';
 
 export function LoginForm() {
   const { login, isLoading, error, clearError } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: '',
@@ -42,7 +43,10 @@ export function LoginForm() {
       return;
     }
 
-    await login(formData.username, formData.password);
+    const success = await login(formData.username, formData.password);
+    if (success) {
+      navigate('/');
+    }
   };
 
   return (
