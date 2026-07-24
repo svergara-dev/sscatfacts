@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
-import { RegisterForm } from '@/molecules/RegisterForm/RegisterForm';
+import { RegisterForm } from '@/organisms/RegisterForm/RegisterForm';
 
 function renderWithProviders(ui: React.ReactElement) {
   return render(

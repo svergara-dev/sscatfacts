@@ -1,9 +1,10 @@
-import { RegisterForm } from '@/molecules/RegisterForm/RegisterForm';
+import { AuthTemplate } from '@/templates/AuthTemplate/AuthTemplate';
+import { RegisterForm } from '@/organisms/RegisterForm/RegisterForm';
 
 export function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <AuthTemplate>
       <RegisterForm />
-    </div>
+    </AuthTemplate>
   );
 }
