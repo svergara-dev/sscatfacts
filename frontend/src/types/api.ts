@@ -21,3 +21,13 @@ export interface RegisterParams {
   password: string;
   confirmPassword: string;
 }
+
+export interface LoginParams {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: UserData;
+}

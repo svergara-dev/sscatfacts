@@ -78,7 +78,7 @@ describe('apiClient', () => {
     localStorage.setItem('token', 'expired-token');
     const removeSpy = vi.spyOn(Storage.prototype, 'removeItem');
 
-    const error = { response: { status: 401 } };
+    const error = { response: { status: 401 }, config: { url: '/facts/random' } };
 
     try {
       await apiClient.interceptors.response.handlers[0].rejected(error);
@@ -87,6 +87,22 @@ describe('apiClient', () => {
     }
 
     expect(removeSpy).toHaveBeenCalledWith('token');
+    removeSpy.mockRestore();
+  });
+
+  it('response interceptor does not redirect on 401 from /auth/login', async () => {
+    localStorage.setItem('token', 'bad-token');
+    const removeSpy = vi.spyOn(Storage.prototype, 'removeItem');
+
+    const error = { response: { status: 401 }, config: { url: '/auth/login' } };
+
+    try {
+      await apiClient.interceptors.response.handlers[0].rejected(error);
+    } catch {
+      // expected
+    }
+
+    expect(removeSpy).not.toHaveBeenCalledWith('token');
     removeSpy.mockRestore();
   });
 

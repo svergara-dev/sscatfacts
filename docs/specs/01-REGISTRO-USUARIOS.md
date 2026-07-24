@@ -4,6 +4,8 @@
 
 Esta especificación define el módulo de registro de nuevos usuarios en la plataforma SSCatFacts. Permite a usuarios nuevos crear una cuenta válida para acceder a funcionalidades de consulta y marcado de cat facts.
 
+> **Estado**: ✅ COMPLETADO
+
 ## Contexto del Negocio
 
 - **Módulo**: Autenticación - Registro

@@ -4,6 +4,8 @@
 
 Esta especificación define el módulo de autenticación que permite a los usuarios registrados acceder a la plataforma SSCatFacts mediante credenciales válidas.
 
+> **Estado**: ✅ COMPLETADO
+
 ## Contexto del Negocio
 
 - **Módulo**: Autenticación - Login
