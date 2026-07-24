@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { FactsPage } from '@/pages/FactsPage';
+import { FavoritesPage } from '@/pages/FavoritesPage';
 
 function App() {
   return (
@@ -19,6 +20,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <FactsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRoute>
+                  <FavoritesPage />
                 </ProtectedRoute>
               }
             />
