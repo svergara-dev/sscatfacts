@@ -56,14 +56,17 @@ class FactService
   private
 
   def find_or_create_fact(external_fact)
-    cat_fact = CatFact.find_by(fact_text: external_fact["fact"])
+    fact_text = external_fact[:fact] || external_fact["fact"]
+    fact_length = external_fact[:length] || external_fact["length"]
+
+    cat_fact = CatFact.find_by(fact_text: fact_text)
 
     return cat_fact if cat_fact
 
     CatFact.create!(
-      fact_text: external_fact["fact"],
-      length: external_fact["length"],
-      api_fact_id: Digest::MD5.hexdigest(external_fact["fact"])
+      fact_text: fact_text,
+      length: fact_length,
+      api_fact_id: Digest::MD5.hexdigest(fact_text)
     )
   end
 end

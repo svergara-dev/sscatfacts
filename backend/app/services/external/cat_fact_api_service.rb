@@ -1,3 +1,5 @@
+require "faraday"
+
 module External
   class CatFactApiService
     BASE_URL = "https://catfact.ninja"
@@ -5,9 +7,9 @@ module External
     CACHE_TTL = 5.minutes
 
     def initialize
-      @connection = Faraday.new(url: BASE_URL) do |f|
+      @connection = ::Faraday.new(url: BASE_URL) do |f|
         f.request :url_encoded
-        f.adapter Faraday.default_adapter
+        f.adapter ::Faraday.default_adapter
         f.options.timeout = 5
         f.options.open_timeout = 5
       end
@@ -55,7 +57,7 @@ module External
           Rails.logger.error("CatFactApiService: HTTP #{response.status} for #{path}")
           nil
         end
-      rescue Faraday::Error, JSON::ParserError => e
+      rescue ::Faraday::Error, JSON::ParserError => e
         retries += 1
         Rails.logger.warn("CatFactApiService: Retry #{retries}/#{MAX_RETRIES} for #{path}: #{e.message}")
 
