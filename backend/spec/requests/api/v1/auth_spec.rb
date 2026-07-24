@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Auth", type: :request do
+  before { Rack::Attack.reset! }
+
   describe "POST /api/v1/auth/register" do
     context "with valid params" do
       let(:valid_params) do
@@ -148,6 +150,59 @@ RSpec.describe "Api::V1::Auth", type: :request do
         post "/api/v1/auth/register", params: {}
 
         expect(response).to have_http_status(:bad_request)
+      end
+    end
+
+    context "rate limiting" do
+      before do
+        Rack::Attack.reset!
+      end
+
+      it "allows up to 3 requests per hour" do
+        3.times do |i|
+          post "/api/v1/auth/register", params: {
+            username: "user#{i}",
+            password: "password123",
+            confirmPassword: "password123"
+          }
+        end
+
+        expect(response).not_to have_http_status(:too_many_requests)
+      end
+
+      it "blocks the 4th request within an hour" do
+        3.times do |i|
+          post "/api/v1/auth/register", params: {
+            username: "user#{i}",
+            password: "password123",
+            confirmPassword: "password123"
+          }
+        end
+
+        post "/api/v1/auth/register", params: {
+          username: "user4",
+          password: "password123",
+          confirmPassword: "password123"
+        }
+
+        expect(response).to have_http_status(:too_many_requests)
+
+        json = JSON.parse(response.body)
+        expect(json["success"]).to be false
+        expect(json["error"]["code"]).to eq("RATE_LIMIT_EXCEEDED")
+        expect(json["error"]["message"]).to eq("Demasiadas solicitudes. Intente más tarde.")
+      end
+
+      it "includes Retry-After header" do
+        4.times do |i|
+          post "/api/v1/auth/register", params: {
+            username: "user#{i}",
+            password: "password123",
+            confirmPassword: "password123"
+          }
+        end
+
+        expect(response.headers["Retry-After"]).to be_present
       end
     end
   end
