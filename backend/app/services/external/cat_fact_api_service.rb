@@ -16,14 +16,10 @@ module External
     end
 
     def fetch_random
-      cache_key = "cat_fact_random_#{Time.current.to_i / 60}"
+      response = request_with_retries("/fact")
+      return nil unless response
 
-      Rails.cache.fetch(cache_key, expires_in: CACHE_TTL) do
-        response = request_with_retries("/fact")
-        return nil unless response
-
-        { fact: response["fact"], length: response["length"] }
-      end
+      { fact: response["fact"], length: response["length"] }
     end
 
     def fetch_list(page: 1, limit: 10)
