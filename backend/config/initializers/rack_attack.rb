@@ -6,6 +6,14 @@ Rack::Attack.throttle("login attempts by ip", limit: 5, period: 1.minute) do |re
   req.ip if req.path == "/api/v1/auth/login" && req.post?
 end
 
+Rack::Attack.throttle("facts random by ip", limit: 30, period: 1.minute) do |req|
+  req.ip if req.path == "/api/v1/facts/random" && req.get?
+end
+
+Rack::Attack.throttle("facts like by ip", limit: 60, period: 1.minute) do |req|
+  req.ip if req.path.match?(%r{/api/v1/facts/\d+/like}) && req.post?
+end
+
 Rack::Attack.throttle("general requests by ip", limit: 100, period: 1.minute) do |req|
   req.ip unless req.path.start_with?("/up")
 end
